@@ -1,0 +1,16 @@
+[Desktop Entry]
+Type=Application
+Icon=harbour-thakir
+Exec=harbour-thakir
+Name=Thakir Athan
+Name[en]=Thakir Athan
+Name[ar]=ذاكر - أوقات الصلاة
+Name[fr]=Thakir Athan
+Name[tr]=Zakir Ezan Vakitleri
+
+[X-Sailjail]
+Permissions=Audio;Internet;Location;Sensors
+OrganizationName=org.hafsoftdz
+ApplicationName=harbour-thakir
+
+
