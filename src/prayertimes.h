@@ -108,6 +108,7 @@ public:
     // certainty in advance). Returns e.g. "15 Ramadan 1447".
     // Supports optional day adjustment (e.g. -3 to +3).
     static QString hijriDateString(const QDate &gregorianDate, int adjustmentDays = 0);
+    static bool isRamadan(const QDate &gregorianDate, int adjustmentDays = 0);
 
     struct CelestialPosition {
         double azimuth = 0.0;   // 0..360 degrees from True North
@@ -151,11 +152,6 @@ private:
     bool ishaIsMinutesAfterMaghrib() const;
     double ishaMinutesAfterMaghrib(const QDate &date) const;
     int methodOffsetMinutes(int prayerIndex) const;
-
-    // Used only to detect Ramadan, for the Umm al-Qura method's
-    // seasonal Isha adjustment (120 min after Maghrib during Ramadan,
-    // vs. the normal 90 min).
-    static bool isRamadan(const QDate &gregorianDate, int adjustmentDays = 0);
 
     Method m_method = MWL;
     Madhab m_madhab = Shafi;

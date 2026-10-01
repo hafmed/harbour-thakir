@@ -44,6 +44,39 @@ public:
         close();
     }
 
+    static bool isDisplayOn()
+    {
+        QDBusConnection sysBus = QDBusConnection::systemBus();
+        if (!sysBus.isConnected())
+            return false;
+
+        QDBusInterface mce(QStringLiteral("com.nokia.mce"),
+                           QStringLiteral("/com/nokia/mce/request"),
+                           QStringLiteral("com.nokia.mce.request"),
+                           sysBus);
+        if (mce.isValid()) {
+            QDBusMessage reply = mce.call(QStringLiteral("get_display_status"));
+            if (reply.type() != QDBusMessage::ErrorMessage && !reply.arguments().isEmpty()) {
+                return (reply.arguments().at(0).toString() != QStringLiteral("off"));
+            }
+        }
+        return false;
+    }
+
+    static void wakeDisplay()
+    {
+        QDBusConnection sysBus = QDBusConnection::systemBus();
+        if (sysBus.isConnected()) {
+            QDBusInterface mce(QStringLiteral("com.nokia.mce"),
+                               QStringLiteral("/com/nokia/mce/request"),
+                               QStringLiteral("com.nokia.mce.request"),
+                               sysBus);
+            if (mce.isValid()) {
+                mce.call(QStringLiteral("req_display_state_on"));
+            }
+        }
+    }
+
     bool show()
     {
         QDBusConnection sessionBus = QDBusConnection::sessionBus();
@@ -51,6 +84,9 @@ public:
             qWarning() << "AthanNotification: Session D-Bus is not connected!";
             return false;
         }
+
+        // Wake display so lockscreen preview is visible and hardware volume keys are active
+        wakeDisplay();
 
         QDBusInterface iface(QStringLiteral("org.freedesktop.Notifications"),
                              QStringLiteral("/org/freedesktop/Notifications"),
@@ -70,15 +106,18 @@ public:
         else if (m_prayer == QStringLiteral("asr")) prayerDisplay = tr("Assar");
         else if (m_prayer == QStringLiteral("maghrib")) prayerDisplay = tr("Maghreb");
         else if (m_prayer == QStringLiteral("isha")) prayerDisplay = tr("Ishaa");
+        else if (m_prayer == QStringLiteral("morning_athkar")) prayerDisplay = tr("Morning Athkar");
+        else if (m_prayer == QStringLiteral("evening_athkar")) prayerDisplay = tr("Evening Athkar");
         else prayerDisplay = m_prayer.isEmpty() ? tr("Athan") : (m_prayer.left(1).toUpper() + m_prayer.mid(1));
 
         bool isSunrise = (m_prayer == QStringLiteral("sunrise"));
+        bool isAthkar = (m_prayer == QStringLiteral("morning_athkar") || m_prayer == QStringLiteral("evening_athkar"));
         QString summary = isSunrise
                 ? tr("Sunrise (Chourouq)")
-                : (isFridayDhuhr ? tr("Friday Prayer Time") : tr("%1 Prayer Time").arg(prayerDisplay));
+                : (isAthkar ? prayerDisplay : (isFridayDhuhr ? tr("Friday Prayer Time") : tr("%1 Prayer Time").arg(prayerDisplay)));
         QString body = isSunrise
                 ? tr("Sunrise time has entered.")
-                : tr("Athan is playing. Tap Stop to silence.");
+                : (isAthkar ? tr("Athkar is playing. Tap Stop to silence.") : tr("Athan is playing. Tap Stop to silence."));
 
         QStringList actions;
         actions << QStringLiteral("stop") << tr("Stop")
@@ -88,8 +127,9 @@ public:
         hints.insert(QStringLiteral("x-nemo-preview-summary"), summary);
         hints.insert(QStringLiteral("x-nemo-preview-body"), body);
         hints.insert(QStringLiteral("category"), QStringLiteral("x-nemo.alarm"));
-        hints.insert(QStringLiteral("urgency"), uchar(2)); // Critical
+        hints.insert(QStringLiteral("urgency"), uchar(2)); // Critical / Alarm urgency
         hints.insert(QStringLiteral("x-nemo-priority"), 100);
+        hints.insert(QStringLiteral("x-nemo-display-on"), true); // Turn on screen for notification preview
         hints.insert(QStringLiteral("x-nemo-icon"), QStringLiteral("harbour-thakir"));
 
         QDBusReply<uint> reply = iface.call(QStringLiteral("Notify"),

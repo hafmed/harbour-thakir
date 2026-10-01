@@ -590,29 +590,40 @@ Page {
                             y: 11
                             width: 64
                             height: 64
-                            radius: 12
+                            radius: 32
                             color: Theme.rgba("#000000", 0.5)
                         }
 
-                        // Kaaba Icon / Golden Marker at the rim
-                        Rectangle {
+                        // Kaaba Icon at the rim
+                        Item {
                             anchors.horizontalCenter: parent.horizontalCenter
                             y: 8
                             width: 64
                             height: 64
-                            radius: 12
-                            color: isAligned ? "#00ff88" : "#f1c40f"
-                            border.color: "#000000"
-                            border.width: 3.0
 
-                            // Little Kaaba band simulation
                             Rectangle {
-                                anchors.top: parent.top
-                                anchors.topMargin: 12
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                width: parent.width - 6
-                                height: 9
-                                color: "#ffd700"
+                                anchors.centerIn: parent
+                                width: 64
+                                height: 64
+                                radius: 32
+                                color: isAligned ? Theme.rgba("#00ff88", 0.3) : Theme.rgba("#f1c40f", 0.25)
+                                border.color: isAligned ? "#00ff88" : "#f1c40f"
+                                border.width: 3.0
+                            }
+
+                            Image {
+                                anchors.centerIn: parent
+                                width: 44
+                                height: 44
+                                sourceSize.width: 44
+                                sourceSize.height: 44
+                                fillMode: Image.PreserveAspectFit
+                                source: Qt.resolvedUrl("Images/ox16-app-kaaba-icon.png")
+                                onStatusChanged: {
+                                    if (status === Image.Error && source != Qt.resolvedUrl("../Images/ox16-app-kaaba-icon.png")) {
+                                        source = Qt.resolvedUrl("../Images/ox16-app-kaaba-icon.png")
+                                    }
+                                }
                             }
                         }
                     }
@@ -749,23 +760,34 @@ Page {
                         spacing: Theme.paddingSmall
                         anchors.verticalCenter: parent.verticalCenter
 
-                        Rectangle {
+                        Item {
                             anchors.verticalCenter: parent.verticalCenter
                             width: 30
                             height: 30
-                            radius: 6
-                            color: isAligned ? "#00ff88" : "#f1c40f"
-                            border.color: "#000000"
-                            border.width: 1.5
 
-                            // Little Kaaba band simulation
                             Rectangle {
-                                anchors.top: parent.top
-                                anchors.topMargin: 6
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                width: parent.width - 4
-                                height: 4
-                                color: "#ffd700"
+                                anchors.centerIn: parent
+                                width: 30
+                                height: 30
+                                radius: 15
+                                color: isAligned ? Theme.rgba("#00ff88", 0.25) : Theme.rgba("#f1c40f", 0.2)
+                                border.color: isAligned ? "#00ff88" : "#f1c40f"
+                                border.width: 1.5
+                            }
+
+                            Image {
+                                anchors.centerIn: parent
+                                width: 22
+                                height: 22
+                                sourceSize.width: 22
+                                sourceSize.height: 22
+                                fillMode: Image.PreserveAspectFit
+                                source: Qt.resolvedUrl("Images/ox16-app-kaaba-icon.png")
+                                onStatusChanged: {
+                                    if (status === Image.Error && source != Qt.resolvedUrl("../Images/ox16-app-kaaba-icon.png")) {
+                                        source = Qt.resolvedUrl("../Images/ox16-app-kaaba-icon.png")
+                                    }
+                                }
                             }
                         }
 

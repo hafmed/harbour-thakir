@@ -4,6 +4,8 @@
 #include <QQuickView>
 #include <QQmlContext>
 #include <QMediaPlayer>
+#include <QMediaPlaylist>
+#include <QFile>
 #include <QTimer>
 #include <QSettings>
 #include <QDateTime>
@@ -19,6 +21,7 @@
 #endif
 
 #include <QEventLoop>
+#include <QKeyEvent>
 #include <QTranslator>
 #include <QLocale>
 #include "prayermanager.h"
@@ -26,8 +29,12 @@
 #include "playbackcontroller.h"
 #include "settingshelper.h"
 #include "powerbuttonwatcher.h"
+#include "eventsviewstatus.h"
 #include "athannotification.h"
 #include "silentmodehelper.h"
+#include "appdbusadaptor.h"
+#include "quranmanager.h"
+#include "quranpageimageprovider.h"
 
 static void installAppTranslator(QCoreApplication *app)
 {
@@ -102,6 +109,164 @@ static void maybeStartSilentMode(QSettings &s, const QString &prayer,
 }
 // -------------------------------------------------------------------------
 
+// --- MCE CPU Keepalive RAII guard -----------------------------------------
+class MceCpuKeepalive
+{
+public:
+    explicit MceCpuKeepalive(const QString &sessionId = QStringLiteral("harbour-thakir"))
+        : m_sessionId(sessionId)
+    {
+        QDBusConnection sysBus = QDBusConnection::systemBus();
+        if (sysBus.isConnected()) {
+            QDBusInterface mce(QStringLiteral("com.nokia.mce"),
+                               QStringLiteral("/com/nokia/mce/request"),
+                               QStringLiteral("com.nokia.mce.request"),
+                               sysBus);
+            if (mce.isValid()) {
+                QDBusMessage reply = mce.call(QStringLiteral("req_cpu_keepalive_start"), m_sessionId);
+                qDebug() << "MceCpuKeepalive: started for" << m_sessionId << "reply:" << reply.type();
+            }
+        }
+    }
+
+    ~MceCpuKeepalive()
+    {
+        QDBusConnection sysBus = QDBusConnection::systemBus();
+        if (sysBus.isConnected()) {
+            QDBusInterface mce(QStringLiteral("com.nokia.mce"),
+                               QStringLiteral("/com/nokia/mce/request"),
+                               QStringLiteral("com.nokia.mce.request"),
+                               sysBus);
+            if (mce.isValid()) {
+                QDBusMessage reply = mce.call(QStringLiteral("req_cpu_keepalive_stop"), m_sessionId);
+                qDebug() << "MceCpuKeepalive: stopped for" << m_sessionId << "reply:" << reply.type();
+            }
+        }
+    }
+
+private:
+    QString m_sessionId;
+};
+// -------------------------------------------------------------------------
+
+static bool playAudioPlaylist(const QStringList &filePaths, const QString &notificationKey,
+                             bool stopWithPower, bool stopWithFlipOver, bool stopWithVolume, bool showNotification)
+{
+    if (filePaths.isEmpty()) return false;
+
+    MceCpuKeepalive keepalive(QStringLiteral("harbour-thakir-playlist"));
+
+    bool stoppedByPower = false;
+    bool stoppedByNotification = false;
+    bool anyTrackPlayed = false;
+    QEventLoop globalLoop;
+
+    AthanNotification *notification = nullptr;
+    if (showNotification) {
+        notification = new AthanNotification(notificationKey, &globalLoop);
+        notification->show();
+    }
+
+    PowerButtonWatcher *watcher = nullptr;
+    if (stopWithPower || stopWithFlipOver || stopWithVolume) {
+        watcher = new PowerButtonWatcher(stopWithPower, stopWithFlipOver, stopWithVolume, &globalLoop);
+    }
+
+    for (int idx = 0; idx < filePaths.size(); ++idx) {
+        if (stoppedByPower || stoppedByNotification) break;
+
+        const QString &soundPath = filePaths.at(idx);
+        qDebug() << "harbour-thakir --check-and-play: playing track" << (idx + 1)
+                 << "of" << filePaths.size() << ":" << soundPath;
+
+        QProcess proc;
+        bool isOgg = soundPath.endsWith(QStringLiteral(".ogg"), Qt::CaseInsensitive);
+
+        const QStringList paplayArgs = {
+            QStringLiteral("--property=media.role=alarm"),
+            QStringLiteral("--property=media.name=Athkar"),
+            soundPath
+        };
+
+        if (isOgg) {
+            proc.start(QStringLiteral("/usr/bin/paplay"), paplayArgs);
+        } else {
+            static bool hasGstPlay = QFile::exists(QStringLiteral("/usr/bin/gst-play-1.0"));
+            static bool hasGstLaunch = QFile::exists(QStringLiteral("/usr/bin/gst-launch-1.0"));
+
+            if (hasGstPlay) {
+                proc.start(QStringLiteral("/usr/bin/gst-play-1.0"), {soundPath});
+            } else if (hasGstLaunch) {
+                proc.start(QStringLiteral("/usr/bin/gst-launch-1.0"), {
+                    QStringLiteral("playbin"),
+                    QStringLiteral("uri=file://") + soundPath
+                });
+            } else {
+                proc.start(QStringLiteral("/usr/bin/paplay"), paplayArgs);
+            }
+        }
+
+        if (!proc.waitForStarted(3000)) {
+            if (!isOgg && QFile::exists(QStringLiteral("/usr/bin/gst-launch-1.0")) && proc.program() != QStringLiteral("/usr/bin/gst-launch-1.0")) {
+                proc.start(QStringLiteral("/usr/bin/gst-launch-1.0"), {
+                    QStringLiteral("playbin"),
+                    QStringLiteral("uri=file://") + soundPath
+                });
+            }
+            if (!proc.waitForStarted(3000)) {
+                proc.start(QStringLiteral("/usr/bin/paplay"), paplayArgs);
+                if (!proc.waitForStarted(3000)) {
+                    qWarning() << "Failed to start audio player for" << soundPath;
+                    continue;
+                }
+            }
+        }
+
+        QEventLoop loop;
+        auto onStop = [&]() {
+            proc.terminate();
+            if (!proc.waitForFinished(1000)) {
+                proc.kill();
+            }
+            loop.quit();
+        };
+
+        QMetaObject::Connection cNotif, cPower;
+        if (notification) {
+            cNotif = QObject::connect(notification, &AthanNotification::stopRequested, &loop, [&]() {
+                qDebug() << "harbour-thakir --check-and-play: notification stop requested for" << notificationKey;
+                stoppedByNotification = true;
+                onStop();
+            });
+        }
+        if (watcher) {
+            cPower = QObject::connect(watcher, &PowerButtonWatcher::stopTriggered, &loop, [&]() {
+                qDebug() << "harbour-thakir --check-and-play: stop triggered (power or flip-over)! Stopping" << notificationKey;
+                stoppedByPower = true;
+                onStop();
+            });
+        }
+
+        QObject::connect(&proc, static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished),
+                         &loop, &QEventLoop::quit);
+
+        loop.exec();
+
+        if (stoppedByPower || stoppedByNotification || (proc.exitStatus() == QProcess::NormalExit && proc.exitCode() == 0)) {
+            anyTrackPlayed = true;
+        }
+
+        if (cNotif) QObject::disconnect(cNotif);
+        if (cPower) QObject::disconnect(cPower);
+    }
+
+    if (notification) {
+        notification->close();
+    }
+
+    return anyTrackPlayed;
+}
+
 static void runCheckAndPlayMode()
 {
     QSettings s(SettingsHelper::settingsFilePath(), QSettings::IniFormat);
@@ -126,12 +291,10 @@ static void runCheckAndPlayMode()
     calc.setLocation(lat, lon);
 
     QDate today = QDate::currentDate();
-    QTimeZone tz(tzId.toUtf8());
-    double tzOffset = 0.0;
-    if (tz.isValid()) {
-        QDateTime noon(today, QTime(12, 0, 0), tz);
-        tzOffset = tz.offsetFromUtc(noon) / 3600.0;
-    }
+    QString countryCode = s.value(QStringLiteral("city/countryCode")).toString();
+    QString countryName = s.value(QStringLiteral("city/country")).toString();
+    int dstMode = s.value(QStringLiteral("prefs/daylightSaving"), 0).toInt();
+    double tzOffset = PrayerManager::staticTimezoneOffsetHoursFor(tzId, countryCode, countryName, lon, dstMode, today);
     calc.setTimezone(tzOffset);
     static const char *names[6] = {"fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"};
     for (int i = 0; i < 6; ++i) {
@@ -151,6 +314,13 @@ static void runCheckAndPlayMode()
     QString todayStr = today.toString(Qt::ISODate);
 
     qDebug() << "harbour-thakir --check-and-play: checking at" << now;
+
+    if (EventsViewStatus::isEnabled() && !cityName.isEmpty()) {
+        PrayerManager pm;
+        pm.updateEventsViewStatus();
+    } else {
+        EventsViewStatus::clearStatus();
+    }
 
     bool respectSilentMode = s.value("respectSilentMode", true).toBool();
 
@@ -173,6 +343,9 @@ static void runCheckAndPlayMode()
         bool due = secsSincePrayer >= 0 && secsSincePrayer <= CHECK_TOLERANCE_SECONDS;
 
         QString playedKey = QString("played/%1").arg(p);
+        if (secsSincePrayer < -60) {
+            s.remove(playedKey);
+        }
         bool alreadyPlayedToday = (s.value(playedKey).toString() == todayStr);
 
         qDebug() << "  " << p << "at" << prayerDt << "- secsSincePrayer:" << secsSincePrayer
@@ -190,6 +363,9 @@ static void runCheckAndPlayMode()
                 bool preAlertDue = secsSincePreAlert >= 0 && secsSincePreAlert <= CHECK_TOLERANCE_SECONDS;
 
                 QString preAlertedKey = QString("prealerted/%1").arg(p);
+                if (secsSincePreAlert < -60) {
+                    s.remove(preAlertedKey);
+                }
                 bool alreadyPreAlertedToday = (s.value(preAlertedKey).toString() == todayStr);
 
                 if (preAlertDue && !alreadyPreAlertedToday) {
@@ -203,7 +379,11 @@ static void runCheckAndPlayMode()
                         qDebug() << "harbour-thakir --check-and-play: playing pre-alert for" << p
                                   << "(" << preAlertMinutes << "min before,"
                                   << secsSincePreAlert << "s after alert time )";
-                        int rc = QProcess::execute("/usr/bin/paplay", {bipPath});
+                        int rc = QProcess::execute(QStringLiteral("/usr/bin/paplay"), {
+                            QStringLiteral("--property=media.role=alarm"),
+                            QStringLiteral("--property=media.name=PreAlert"),
+                            bipPath
+                        });
                         if (rc != 0) {
                             qWarning() << "harbour-thakir --check-and-play: paplay failed for"
                                       << p << "pre-alert (exit" << rc << ") - will retry";
@@ -235,10 +415,17 @@ static void runCheckAndPlayMode()
                           << "(" << secsSincePrayer << "s after scheduled time )";
 
                 bool stopWithPower = s.value(QStringLiteral("stopWithPowerButton"), true).toBool();
+                bool stopWithFlipOver = s.value(QStringLiteral("stopWithFlipOver"), true).toBool();
+                bool stopWithVolume = s.value(QStringLiteral("stopWithVolumeButtons"), true).toBool();
                 bool showNotification = s.value(QStringLiteral("showNotification"), true).toBool();
 
+                MceCpuKeepalive keepalive(QStringLiteral("harbour-thakir-athan"));
                 QProcess paplay;
-                paplay.start(QStringLiteral("/usr/bin/paplay"), {soundPath});
+                paplay.start(QStringLiteral("/usr/bin/paplay"), {
+                    QStringLiteral("--property=media.role=alarm"),
+                    QStringLiteral("--property=media.name=Athan"),
+                    soundPath
+                });
                 if (!paplay.waitForStarted(3000)) {
                     qWarning() << "harbour-thakir --check-and-play: paplay failed to start for" << p
                               << "(error:" << paplay.errorString() << ") - will retry";
@@ -263,10 +450,10 @@ static void runCheckAndPlayMode()
                         });
                     }
 
-                    if (stopWithPower) {
-                        watcher = new PowerButtonWatcher(&loop);
-                        QObject::connect(watcher, &PowerButtonWatcher::powerButtonPressed, &loop, [&]() {
-                            qDebug() << "harbour-thakir --check-and-play: power button pressed! Stopping athan for" << p;
+                    if (stopWithPower || stopWithFlipOver || stopWithVolume) {
+                        watcher = new PowerButtonWatcher(stopWithPower, stopWithFlipOver, stopWithVolume, &loop);
+                        QObject::connect(watcher, &PowerButtonWatcher::stopTriggered, &loop, [&]() {
+                            qDebug() << "harbour-thakir --check-and-play: stop triggered (power, flip-over, or volume)! Stopping athan for" << p;
                             stoppedByPower = true;
                             paplay.terminate();
                             if (!paplay.waitForFinished(1000)) {
@@ -295,6 +482,91 @@ static void runCheckAndPlayMode()
             }
         }
     }
+
+    // -----------------------------------------------------------------
+    // Morning and Evening Athkar checks
+    // -----------------------------------------------------------------
+    bool morningAthkarEnabled = s.value(QStringLiteral("athkar/morningEnabled"), false).toBool();
+    if (morningAthkarEnabled) {
+        int morningMinutes = s.value(QStringLiteral("athkar/morningMinutes"), 10).toInt();
+        QString sunriseHm = PrayerTimes::formatTime(t.sunrise);
+        QDateTime sunriseDt(today, QTime::fromString(sunriseHm, QStringLiteral("HH:mm")));
+        QDateTime morningDt = sunriseDt.addSecs(-morningMinutes * 60);
+
+        qint64 secsSinceMorning = morningDt.secsTo(now);
+        bool morningDue = (secsSinceMorning >= 0 && secsSinceMorning <= CHECK_TOLERANCE_SECONDS);
+        QString playedMorningKey = QStringLiteral("played/morning_athkar");
+        if (secsSinceMorning < -60) {
+            s.remove(playedMorningKey);
+        }
+        bool alreadyPlayedMorning = (s.value(playedMorningKey).toString() == todayStr);
+
+        qDebug() << "  morning_athkar at" << morningDt << "- secsSince:" << secsSinceMorning
+                 << "due:" << morningDue << "alreadyPlayed:" << alreadyPlayedMorning;
+
+        if (morningDue && !alreadyPlayedMorning) {
+            QString currentProfile = respectSilentMode ? getCurrentProfile() : QString();
+            if (respectSilentMode && currentProfile == QStringLiteral("silent")) {
+                qDebug() << "harbour-thakir --check-and-play: phone is in silent mode, skipping morning athkar";
+                s.setValue(playedMorningKey, todayStr);
+            } else {
+                qDebug() << "harbour-thakir --check-and-play: playing morning athkar";
+                PrayerManager pm;
+                QStringList files = pm.morningAthkarAudioPaths();
+                bool stopWithPower = s.value(QStringLiteral("stopWithPowerButton"), true).toBool();
+                bool stopWithFlipOver = s.value(QStringLiteral("stopWithFlipOver"), true).toBool();
+                bool stopWithVolume = s.value(QStringLiteral("stopWithVolumeButtons"), true).toBool();
+                bool showNotification = s.value(QStringLiteral("showNotification"), true).toBool();
+                bool ok = playAudioPlaylist(files, QStringLiteral("morning_athkar"), stopWithPower, stopWithFlipOver, stopWithVolume, showNotification);
+                if (ok) {
+                    s.setValue(playedMorningKey, todayStr);
+                } else {
+                    qWarning() << "harbour-thakir --check-and-play: morning athkar failed to play - will retry";
+                }
+            }
+        }
+    }
+
+    bool eveningAthkarEnabled = s.value(QStringLiteral("athkar/eveningEnabled"), false).toBool();
+    if (eveningAthkarEnabled) {
+        int eveningMinutes = s.value(QStringLiteral("athkar/eveningMinutes"), 5).toInt();
+        QString maghribHm = PrayerTimes::formatTime(t.maghrib);
+        QDateTime maghribDt(today, QTime::fromString(maghribHm, QStringLiteral("HH:mm")));
+        QDateTime eveningDt = maghribDt.addSecs(-eveningMinutes * 60);
+
+        qint64 secsSinceEvening = eveningDt.secsTo(now);
+        bool eveningDue = (secsSinceEvening >= 0 && secsSinceEvening <= CHECK_TOLERANCE_SECONDS);
+        QString playedEveningKey = QStringLiteral("played/evening_athkar");
+        if (secsSinceEvening < -60) {
+            s.remove(playedEveningKey);
+        }
+        bool alreadyPlayedEvening = (s.value(playedEveningKey).toString() == todayStr);
+
+        qDebug() << "  evening_athkar at" << eveningDt << "- secsSince:" << secsSinceEvening
+                 << "due:" << eveningDue << "alreadyPlayed:" << alreadyPlayedEvening;
+
+        if (eveningDue && !alreadyPlayedEvening) {
+            QString currentProfile = respectSilentMode ? getCurrentProfile() : QString();
+            if (respectSilentMode && currentProfile == QStringLiteral("silent")) {
+                qDebug() << "harbour-thakir --check-and-play: phone is in silent mode, skipping evening athkar";
+                s.setValue(playedEveningKey, todayStr);
+            } else {
+                qDebug() << "harbour-thakir --check-and-play: playing evening athkar";
+                PrayerManager pm;
+                QStringList files = pm.eveningAthkarAudioPaths();
+                bool stopWithPower = s.value(QStringLiteral("stopWithPowerButton"), true).toBool();
+                bool stopWithFlipOver = s.value(QStringLiteral("stopWithFlipOver"), true).toBool();
+                bool stopWithVolume = s.value(QStringLiteral("stopWithVolumeButtons"), true).toBool();
+                bool showNotification = s.value(QStringLiteral("showNotification"), true).toBool();
+                bool ok = playAudioPlaylist(files, QStringLiteral("evening_athkar"), stopWithPower, stopWithFlipOver, stopWithVolume, showNotification);
+                if (ok) {
+                    s.setValue(playedEveningKey, todayStr);
+                } else {
+                    qWarning() << "harbour-thakir --check-and-play: evening athkar failed to play - will retry";
+                }
+            }
+        }
+    }
 }
 
 // ---------------------------------------------------------------------
@@ -305,15 +577,24 @@ static void runCheckAndPlayMode()
 // ---------------------------------------------------------------------
 static int runPlayMode(QGuiApplication &app, const QString &prayer)
 {
-    // Deliberately does NOT apply the Friday-Dhuhr-uses-bip rule that
-    // --check-and-play does - this mode is for previewing/testing a
-    // prayer's assigned sound on demand, so always plays that sound
-    // regardless of what day it happens to be run on.
     PrayerManager manager;
-    QString soundPath = manager.audioPathFor(prayer);
-
     auto *player = new QMediaPlayer(&app);
-    player->setMedia(QUrl::fromLocalFile(soundPath));
+
+    bool isAthkar = (prayer == QStringLiteral("morning_athkar") || prayer == QStringLiteral("evening_athkar"));
+    if (isAthkar) {
+        QStringList soundPaths = (prayer == QStringLiteral("morning_athkar"))
+                ? manager.morningAthkarAudioPaths()
+                : manager.eveningAthkarAudioPaths();
+        auto *playlist = new QMediaPlaylist(player);
+        for (const QString &p : soundPaths) {
+            playlist->addMedia(QUrl::fromLocalFile(p));
+        }
+        playlist->setPlaybackMode(QMediaPlaylist::Sequential);
+        player->setPlaylist(playlist);
+    } else {
+        QString soundPath = manager.audioPathFor(prayer);
+        player->setMedia(QUrl::fromLocalFile(soundPath));
+    }
     player->setVolume(100);
 
     QObject::connect(player, &QMediaPlayer::mediaStatusChanged, &app,
@@ -327,7 +608,8 @@ static int runPlayMode(QGuiApplication &app, const QString &prayer)
 
     // Safety timeout in case audio playback state never resolves, or the
     // person never taps Stop - do not hang around indefinitely.
-    QTimer::singleShot(180000, &app, &QCoreApplication::quit);
+    int timeoutMs = isAthkar ? 600000 : 180000;
+    QTimer::singleShot(timeoutMs, &app, &QCoreApplication::quit);
 
     // On-screen Stop control - see qml/pages/StopPage.qml. Tapping Stop
     // (or just leaving/closing this screen) silences it immediately,
@@ -344,15 +626,49 @@ static int runPlayMode(QGuiApplication &app, const QString &prayer)
         QObject::connect(notification, &AthanNotification::stopRequested, &playback, &PlaybackController::stop);
     }
 
-    // Power button stop support:
+    // Power button, flip-over, and volume buttons stop support:
     bool stopWithPower = SettingsHelper::value(QStringLiteral("stopWithPowerButton"), true).toBool();
-    if (stopWithPower) {
-        auto *watcher = new PowerButtonWatcher(&app);
-        QObject::connect(watcher, &PowerButtonWatcher::powerButtonPressed, &playback, &PlaybackController::stop);
+    bool stopWithFlipOver = SettingsHelper::value(QStringLiteral("stopWithFlipOver"), true).toBool();
+    bool stopWithVolume = SettingsHelper::value(QStringLiteral("stopWithVolumeButtons"), true).toBool();
+    if (stopWithPower || stopWithFlipOver || stopWithVolume) {
+        auto *watcher = new PowerButtonWatcher(stopWithPower, stopWithFlipOver, stopWithVolume, &app);
+        QObject::connect(watcher, &PowerButtonWatcher::stopTriggered, &playback, &PlaybackController::stop);
+    }
+
+    if (stopWithVolume) {
+        class VolumeKeyFilter : public QObject
+        {
+        public:
+            VolumeKeyFilter(PlaybackController *controller, QObject *parent = nullptr)
+                : QObject(parent), m_controller(controller) {}
+
+        protected:
+            bool eventFilter(QObject *obj, QEvent *event) override
+            {
+                if (event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease) {
+                    auto *keyEvent = static_cast<QKeyEvent *>(event);
+                    if (keyEvent->key() == Qt::Key_VolumeUp || keyEvent->key() == Qt::Key_VolumeDown) {
+                        keyEvent->accept();
+                        if (event->type() == QEvent::KeyPress && m_controller) {
+                            qDebug() << "VolumeKeyFilter: Hardware volume key pressed in GUI -> stopping playback";
+                            m_controller->stop();
+                        }
+                        return true;
+                    }
+                }
+                return QObject::eventFilter(obj, event);
+            }
+
+        private:
+            PlaybackController *m_controller;
+        };
+
+        app.installEventFilter(new VolumeKeyFilter(&playback, &app));
     }
 
     QQuickView *view = SailfishApp::createView();
     view->rootContext()->setContextProperty("playback", &playback);
+    view->rootContext()->setContextProperty("stopWithVolumeButtons", stopWithVolume);
     view->setSource(SailfishApp::pathTo("qml/pages/StopPage.qml"));
     view->show();
 
@@ -372,6 +688,7 @@ int main(int argc, char *argv[])
         QCoreApplication app(argc, argv);
         app.setOrganizationName("org.hafsoftdz");
         app.setApplicationName("harbour-thakir");
+        installAppTranslator(&app);
         runCheckAndPlayMode();
         return 0;
     }
@@ -393,9 +710,50 @@ int main(int argc, char *argv[])
 
     QQuickView *view = SailfishApp::createView();
 
+    QDBusConnection bus = QDBusConnection::sessionBus();
+    if (bus.isConnected()) {
+        auto *adaptor = new AppDBusAdaptor(view, app);
+        new FreedesktopAppAdaptor(view, app);
+
+        bus.registerObject(QStringLiteral("/"), app, QDBusConnection::ExportAdaptors);
+        bus.registerObject(QStringLiteral("/org/hafsoftdz/harbour_thakir"), app, QDBusConnection::ExportAdaptors);
+
+        bool registered = bus.registerService(QStringLiteral("org.hafsoftdz.harbour-thakir"));
+        bus.registerService(QStringLiteral("org.hafsoftdz.harbour_thakir"));
+
+        if (!registered) {
+            // Another instance is already running! Call open() on it and exit this one.
+            qDebug() << "harbour-thakir: An instance is already running. Activating it and exiting.";
+            QDBusInterface iface(QStringLiteral("org.hafsoftdz.harbour-thakir"),
+                                 QStringLiteral("/"),
+                                 QStringLiteral("org.hafsoftdz.harbour_thakir"),
+                                 bus);
+            if (iface.isValid()) {
+                iface.call(QStringLiteral("open"));
+            }
+            return 0;
+        }
+
+        // Also connect to ActionInvoked signal from org.freedesktop.Notifications
+        bus.connect(
+            QStringLiteral("org.freedesktop.Notifications"),
+            QStringLiteral("/org/freedesktop/Notifications"),
+            QStringLiteral("org.freedesktop.Notifications"),
+            QStringLiteral("ActionInvoked"),
+            adaptor,
+            SLOT(onActionInvoked(uint,QString)));
+    }
+
+    EventsViewStatus::ensureDBusServiceFiles();
+
     PrayerManager manager;
     manager.setQmlEngine(view->engine());
     view->rootContext()->setContextProperty("prayerManager", &manager);
+    manager.updateEventsViewStatus();
+
+    QuranManager quranManager;
+    view->rootContext()->setContextProperty("quranManager", &quranManager);
+    view->engine()->addImageProvider(QStringLiteral("quranpage"), new QuranPageImageProvider(&quranManager));
 
     view->setSource(SailfishApp::pathTo("qml/harbour-thakir.qml"));
     view->show();

@@ -26,6 +26,7 @@ Page {
     Connections {
         target: prayerManager
         onUse24HourFormatChanged: timeFormatCombo.currentIndex = prayerManager.use24HourFormat ? 1 : 0
+        onDaylightSavingChanged: dstAdjCombo.currentIndex = prayerManager.daylightSaving
     }
 
     SilicaFlickable {
@@ -50,6 +51,26 @@ Page {
                     MenuItem { text: formatDigits(qsTr("24-hour")) }
                 }
                 onCurrentIndexChanged: prayerManager.use24HourFormat = (currentIndex === 1)
+            }
+
+            SectionHeader { text: prayerManager.isArabicLanguage ? "التوقيت الصيفي" : qsTr("Daylight saving time") }
+
+            ComboBox {
+                id: dstAdjCombo
+                label: prayerManager.isArabicLanguage ? "التوقيت الصيفي" : qsTr("Daylight saving time")
+                description: prayerManager.daylightSavingDescription
+                width: parent.width
+                currentIndex: prayerManager.daylightSaving
+                menu: ContextMenu {
+                    MenuItem { text: prayerManager.isArabicLanguage ? "تلقائي (بحسب الدولة والمدينة)" : qsTr("Automatic (by country & city)") }
+                    MenuItem { text: prayerManager.isArabicLanguage ? "معطّل (التوقيت القياسي)" : qsTr("Disabled (Standard time)") }
+                    MenuItem { text: prayerManager.isArabicLanguage ? "مفعّل (+1 ساعة)" : qsTr("Enabled (+1 hour)") }
+                }
+                onCurrentIndexChanged: {
+                    if (currentIndex >= 0 && currentIndex <= 2) {
+                        prayerManager.daylightSaving = currentIndex
+                    }
+                }
             }
 
             SectionHeader { text: qsTr("Prayer time adjustments") }
@@ -125,6 +146,27 @@ Page {
                 font.pixelSize: Theme.fontSizeExtraSmall
                 color: Theme.highlightColor
                 text: formatDigits(qsTr("Resulting date: %1").arg(prayerManager.hijriDate))
+            }
+
+            SectionHeader { text: qsTr("Ramadan & Imsak") }
+
+            TextSwitch {
+                id: alwaysImsakSwitch
+                text: qsTr("Always show Imsak on main page")
+                description: qsTr("By default, Imsak is only shown during Ramadan. Turn this on to show it year-round.")
+                checked: prayerManager.showImsakAlways
+                onCheckedChanged: prayerManager.showImsakAlways = checked
+            }
+
+            Slider {
+                width: parent.width
+                label: qsTr("Imsak margin before Fajr")
+                minimumValue: 5
+                maximumValue: 30
+                stepSize: 1
+                value: prayerManager.imsakMinutes
+                valueText: formatDigits(qsTr("%1 min before Fajr").arg(Math.round(value)))
+                onSliderValueChanged: prayerManager.imsakMinutes = Math.round(value)
             }
         }
     }

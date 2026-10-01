@@ -8,6 +8,23 @@ ApplicationWindow {
             id: page
             allowedOrientations: Orientation.All
 
+            focus: true
+            Component.onCompleted: page.forceActiveFocus()
+            Keys.onVolumeUpPressed: {
+                if (typeof stopWithVolumeButtons === "undefined" || stopWithVolumeButtons) {
+                    event.accepted = true
+                    playback.stop()
+                    Qt.quit()
+                }
+            }
+            Keys.onVolumeDownPressed: {
+                if (typeof stopWithVolumeButtons === "undefined" || stopWithVolumeButtons) {
+                    event.accepted = true
+                    playback.stop()
+                    Qt.quit()
+                }
+            }
+
             onStatusChanged: {
                 if (status === PageStatus.Deactivating) {
                     playback.stop()
@@ -15,6 +32,8 @@ ApplicationWindow {
             }
 
             function prayerDisplayName(prayerKey) {
+                if (prayerKey === "morning_athkar") return qsTr("Morning Athkar")
+                if (prayerKey === "evening_athkar") return qsTr("Evening Athkar")
                 if (prayerKey === "dhuhr" && (new Date()).getDay() === 5) {
                     return qsTr("Friday prayer")
                 }
@@ -40,7 +59,9 @@ ApplicationWindow {
                     Label {
                         width: parent.width
                         horizontalAlignment: Text.AlignHCenter
-                        text: qsTr("Athan")
+                        text: (playback.prayer === "morning_athkar" || playback.prayer === "evening_athkar")
+                              ? qsTr("Athkar")
+                              : qsTr("Athan")
                         font.pixelSize: Theme.fontSizeExtraLarge
                         color: Theme.highlightColor
                     }

@@ -60,6 +60,12 @@ public:
         return s.value(key, defaultValue);
     }
 
+    static bool contains(const QString &key)
+    {
+        QSettings s(settingsFilePath(), QSettings::IniFormat);
+        return s.contains(key);
+    }
+
     static void ensureSanity(QSettings &s)
     {
         Q_UNUSED(s);

@@ -1,6 +1,6 @@
 Name:       harbour-thakir
 Summary:    Athan (call to prayer) times for any city
-Version:    1.0.9
+Version:    3.1.0
 Release:    1
 License:    LICENSE
 URL:        https://example.com/harbour-thakir
@@ -11,8 +11,10 @@ Requires:   qt5-qtlocation >= 5.2.0
 Requires:   qt5-qtdeclarative-import-location >= 5.2.0
 Requires:   qt5-qtdeclarative-import-positioning >= 5.2.0
 Requires:   qt5-qtdeclarative-import-sensors >= 5.2.0
+Requires:   qt5-qtsensors >= 5.2.0
 BuildRequires:  pkgconfig(sailfishapp) >= 1.0.2
 BuildRequires:  pkgconfig(Qt5Core)
+BuildRequires:  pkgconfig(Qt5Sql)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(Qt5Network)
@@ -21,6 +23,7 @@ BuildRequires:  pkgconfig(Qt5Positioning)
 BuildRequires:  pkgconfig(Qt5Location)
 BuildRequires:  pkgconfig(Qt5Sensors)
 BuildRequires:  pkgconfig(Qt5DBus)
+BuildRequires:  pkgconfig(Qt5Svg)
 BuildRequires:  desktop-file-utils
 
 %description
@@ -53,6 +56,7 @@ desktop-file-install --delete-original \
 %{_datadir}/%{name}
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
+%{_datadir}/dbus-1/services/*.service
 /usr/lib/systemd/system/%{name}-check.timer
 /usr/lib/systemd/system/%{name}-check.service
 
@@ -66,6 +70,8 @@ desktop-file-install --delete-original \
 # some reason.
 systemctl daemon-reload ||:
 systemctl enable --now %{name}-check.timer ||:
+systemctl restart %{name}-check.timer ||:
+update-desktop-database %{_datadir}/applications ||:
 
 %preun
 # Only on final removal, not on upgrade (an upgrade's %post above will

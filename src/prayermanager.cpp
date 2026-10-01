@@ -1,5 +1,7 @@
 #include "prayermanager.h"
 #include "settingshelper.h"
+#include "eventsviewstatus.h"
+#include "islamicevents.h"
 
 #include <QSettings>
 #include <QDateTime>
@@ -21,6 +23,8 @@
 #include <sailfishapp.h>
 #include <cmath>
 #include <cstdlib>
+#include <algorithm>
+#include <random>
 
 static const char *PRAYER_NAMES[6] = {"fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"};
 
@@ -30,9 +34,11 @@ PrayerManager::PrayerManager(QObject *parent) : QObject(parent)
     SettingsHelper::ensureSanity(s);
     m_cityName = s.value("city/name").toString();
     m_countryName = s.value("city/country").toString();
+    m_countryCode = s.value("city/countryCode").toString();
     m_lat = s.value("city/lat", 0.0).toDouble();
     m_lon = s.value("city/lon", 0.0).toDouble();
     m_tzId = s.value("city/tz", "UTC").toString();
+    m_daylightSaving = s.value("prefs/daylightSaving", 0).toInt();
     m_method = s.value("prefs/method", 0).toInt();
     m_madhab = s.value("prefs/madhab", 0).toInt();
     m_highLatitudeRule = s.value("prefs/highLatitudeRule", 1).toInt();
@@ -45,6 +51,15 @@ PrayerManager::PrayerManager(QObject *parent) : QObject(parent)
     });
     m_silentModeTimer->start();
     SilentModeHelper::checkAllSilentModes();
+
+    m_lastDate = QDate::currentDate();
+    m_lastNextPrayer = nextPrayerName();
+    m_lastIsNextPrayerTomorrow = isNextPrayerTomorrow();
+
+    m_periodicTimer = new QTimer(this);
+    m_periodicTimer->setInterval(1000);
+    connect(m_periodicTimer, &QTimer::timeout, this, &PrayerManager::onPeriodicCheck);
+    m_periodicTimer->start();
 }
 
 QString PrayerManager::cityName() const { return m_cityName; }
@@ -92,14 +107,26 @@ void PrayerManager::selectCity(const QString &name, const QString &country,
     m_lat = latitude;
     m_lon = longitude;
     m_tzId = timezoneId;
+    m_countryCode = countryCode.trimmed().toUpper();
     m_method = defaultMethodForCountryCode(countryCode);
 
     bool useHindi = defaultHindiNumeralsForCountry(countryCode, country, timezoneId);
     setUseHindiNumerals(useHindi);
 
+    if (!SettingsHelper::value(QStringLiteral("backgroundImageCustomized"), false).toBool()) {
+        int defBg = defaultBackgroundImageForCountry(countryCode, country, timezoneId);
+        int currentBg = backgroundImage();
+        SettingsHelper::setValue(QStringLiteral("backgroundImage"), defBg);
+        SettingsHelper::setValue(QStringLiteral("backgroundImageCustomized"), false);
+        if (currentBg != defBg) {
+            emit backgroundImageChanged();
+        }
+    }
+
     QSettings s(SettingsHelper::settingsFilePath(), QSettings::IniFormat);
     s.setValue("city/name", m_cityName);
     s.setValue("city/country", m_countryName);
+    s.setValue("city/countryCode", m_countryCode);
     s.setValue("city/lat", m_lat);
     s.setValue("city/lon", m_lon);
     s.setValue("city/tz", m_tzId);
@@ -109,6 +136,7 @@ void PrayerManager::selectCity(const QString &name, const QString &country,
 
     emit cityChanged();
     emit methodChanged();
+    emit daylightSavingChanged();
     emit activeFavoriteChanged();
     emit favoritesChanged();
     recalculateAndSchedule();
@@ -232,6 +260,23 @@ bool PrayerManager::defaultHindiNumeralsForCountry(const QString &countryCode, c
     }
 
     return false;
+}
+
+int PrayerManager::defaultBackgroundImageForCountry(const QString &countryCode, const QString &countryName, const QString &timezoneId)
+{
+    const QString cc = countryCode.trimmed().toUpper();
+    const QString c = countryName.trimmed().toLower();
+    const QString tz = timezoneId.trimmed().toLower();
+
+    // Djamaa el Djazaïr (Great Mosque of Algiers, index 17) is default for Algeria
+    if (cc == QStringLiteral("DZ")
+        || c.contains(QStringLiteral("algeria"))
+        || countryName.contains(QString::fromUtf8("الجزائر"))
+        || tz.contains(QStringLiteral("algiers"))) {
+        return 17;
+    }
+
+    return 1;
 }
 
 void PrayerManager::setPrayerEnabled(const QString &prayer, bool enabled)
@@ -422,6 +467,28 @@ bool PrayerManager::stopWithPowerButton() const
     return SettingsHelper::value("stopWithPowerButton", true).toBool();
 }
 
+void PrayerManager::setStopWithFlipOver(bool enabled)
+{
+    SettingsHelper::setValue("stopWithFlipOver", enabled);
+    emit stopWithFlipOverChanged();
+}
+
+bool PrayerManager::stopWithFlipOver() const
+{
+    return SettingsHelper::value("stopWithFlipOver", true).toBool();
+}
+
+void PrayerManager::setStopWithVolumeButtons(bool enabled)
+{
+    SettingsHelper::setValue("stopWithVolumeButtons", enabled);
+    emit stopWithVolumeButtonsChanged();
+}
+
+bool PrayerManager::stopWithVolumeButtons() const
+{
+    return SettingsHelper::value("stopWithVolumeButtons", true).toBool();
+}
+
 void PrayerManager::setShowNotification(bool enabled)
 {
     SettingsHelper::setValue("showNotification", enabled);
@@ -457,6 +524,47 @@ int PrayerManager::homeLayout() const
     return SettingsHelper::value("homeLayout", 0).toInt();
 }
 
+int PrayerManager::backgroundImage() const
+{
+    if (!SettingsHelper::contains(QStringLiteral("backgroundImage"))) {
+        const QString tz = m_tzId.isEmpty() ? QString::fromUtf8(QTimeZone::systemTimeZoneId()) : m_tzId;
+        return defaultBackgroundImageForCountry(QString(), m_countryName, tz);
+    }
+    int stored = SettingsHelper::value(QStringLiteral("backgroundImage"), 1).toInt();
+    if (stored == 1 && !SettingsHelper::value(QStringLiteral("backgroundImageCustomized"), false).toBool()) {
+        const QString tz = m_tzId.isEmpty() ? QString::fromUtf8(QTimeZone::systemTimeZoneId()) : m_tzId;
+        if (defaultBackgroundImageForCountry(QString(), m_countryName, tz) == 17) {
+            return 17;
+        }
+    }
+    return stored;
+}
+
+void PrayerManager::setBackgroundImage(int index)
+{
+    if (index < 0 || index > 17) index = 0;
+    SettingsHelper::setValue(QStringLiteral("backgroundImageCustomized"), true);
+    int current = backgroundImage();
+    SettingsHelper::setValue(QStringLiteral("backgroundImage"), index);
+    if (current != index) {
+        emit backgroundImageChanged();
+    }
+}
+
+double PrayerManager::backgroundOpacity() const
+{
+    return SettingsHelper::value(QStringLiteral("backgroundOpacity"), 0.35).toDouble();
+}
+
+void PrayerManager::setBackgroundOpacity(double opacity)
+{
+    double clamped = qBound(0.05, opacity, 1.0);
+    if (std::abs(backgroundOpacity() - clamped) > 0.001) {
+        SettingsHelper::setValue(QStringLiteral("backgroundOpacity"), clamped);
+        emit backgroundOpacityChanged();
+    }
+}
+
 void PrayerManager::setHijriAdjustment(int days)
 {
     if (days < -3) days = -3;
@@ -469,6 +577,47 @@ void PrayerManager::setHijriAdjustment(int days)
 int PrayerManager::hijriAdjustment() const
 {
     return SettingsHelper::value("hijriAdjustment", 0).toInt();
+}
+
+bool PrayerManager::isRamadan() const
+{
+    QDate adjustedDate = QDate::currentDate().addDays(hijriAdjustment());
+    return PrayerTimes::gregorianToHijri(adjustedDate).month == 9;
+}
+
+QString PrayerManager::imsakTime() const
+{
+    return todayTimes().value(QStringLiteral("imsak")).toString();
+}
+
+int PrayerManager::imsakMinutes() const
+{
+    int val = SettingsHelper::value(QStringLiteral("imsakMinutes"), 10).toInt();
+    return (val > 0) ? val : 10;
+}
+
+void PrayerManager::setImsakMinutes(int mins)
+{
+    if (mins <= 0) mins = 10;
+    if (imsakMinutes() != mins) {
+        SettingsHelper::setValue(QStringLiteral("imsakMinutes"), mins);
+        emit imsakMinutesChanged();
+        emit timesChanged();
+    }
+}
+
+bool PrayerManager::showImsakAlways() const
+{
+    return SettingsHelper::value(QStringLiteral("showImsakAlways"), false).toBool();
+}
+
+void PrayerManager::setShowImsakAlways(bool always)
+{
+    if (showImsakAlways() != always) {
+        SettingsHelper::setValue(QStringLiteral("showImsakAlways"), always);
+        emit showImsakAlwaysChanged();
+        emit timesChanged();
+    }
 }
 
 void PrayerManager::setCompassCalibration(int offset)
@@ -592,13 +741,240 @@ QVariantList PrayerManager::availableSounds() const
     return result;
 }
 
+bool PrayerManager::isEuropeanDst(const QDate &date)
+{
+    int year = date.year();
+    QDate lastSundayMarch(year, 3, 31);
+    while (lastSundayMarch.dayOfWeek() != 7) lastSundayMarch = lastSundayMarch.addDays(-1);
+    QDate lastSundayOct(year, 10, 31);
+    while (lastSundayOct.dayOfWeek() != 7) lastSundayOct = lastSundayOct.addDays(-1);
+    return date >= lastSundayMarch && date < lastSundayOct;
+}
+
+bool PrayerManager::isEgyptDst(const QDate &date)
+{
+    int year = date.year();
+    QDate lastFridayApril(year, 4, 30);
+    while (lastFridayApril.dayOfWeek() != 5) lastFridayApril = lastFridayApril.addDays(-1);
+    QDate lastThursdayOct(year, 10, 31);
+    while (lastThursdayOct.dayOfWeek() != 4) lastThursdayOct = lastThursdayOct.addDays(-1);
+    return date >= lastFridayApril && date <= lastThursdayOct;
+}
+
+bool PrayerManager::isNorthAmericanDst(const QDate &date)
+{
+    int year = date.year();
+    QDate firstSundayMarch(year, 3, 1);
+    while (firstSundayMarch.dayOfWeek() != 7) firstSundayMarch = firstSundayMarch.addDays(1);
+    QDate secondSundayMarch = firstSundayMarch.addDays(7);
+    QDate firstSundayNov(year, 11, 1);
+    while (firstSundayNov.dayOfWeek() != 7) firstSundayNov = firstSundayNov.addDays(1);
+    return date >= secondSundayMarch && date < firstSundayNov;
+}
+
+double PrayerManager::fallbackStandardOffset(const QString &countryCode, double lon)
+{
+    QString cc = countryCode.trimmed().toUpper();
+    if (cc == QStringLiteral("DZ") || cc == QStringLiteral("TN") || cc == QStringLiteral("MA") ||
+        cc == QStringLiteral("NE") || cc == QStringLiteral("NG") || cc == QStringLiteral("TD")) {
+        return 1.0;
+    }
+    if (cc == QStringLiteral("SA") || cc == QStringLiteral("KW") || cc == QStringLiteral("QA") ||
+        cc == QStringLiteral("BH") || cc == QStringLiteral("IQ") || cc == QStringLiteral("YE") ||
+        cc == QStringLiteral("SY") || cc == QStringLiteral("JO") || cc == QStringLiteral("TR")) {
+        return 3.0;
+    }
+    if (cc == QStringLiteral("AE") || cc == QStringLiteral("OM")) {
+        return 4.0;
+    }
+    if (cc == QStringLiteral("EG") || cc == QStringLiteral("LB") || cc == QStringLiteral("PS") ||
+        cc == QStringLiteral("SD") || cc == QStringLiteral("LY")) {
+        return 2.0;
+    }
+    return std::round(lon / 15.0);
+}
+
+double PrayerManager::automaticDaylightOffset(const QString &countryCode, const QString &countryName,
+                                             const QString &ianaId, const QDate &date)
+{
+    Q_UNUSED(countryName);
+    QString cc = countryCode.trimmed().toUpper();
+    QString tzStr = ianaId.trimmed();
+
+    if (cc.isEmpty()) {
+        if (tzStr.startsWith(QStringLiteral("Africa/Algiers"))) cc = QStringLiteral("DZ");
+        else if (tzStr.startsWith(QStringLiteral("Africa/Cairo"))) cc = QStringLiteral("EG");
+        else if (tzStr.startsWith(QStringLiteral("Africa/Casablanca"))) cc = QStringLiteral("MA");
+        else if (tzStr.startsWith(QStringLiteral("Africa/Tunis"))) cc = QStringLiteral("TN");
+        else if (tzStr.startsWith(QStringLiteral("Africa/Tripoli"))) cc = QStringLiteral("LY");
+        else if (tzStr.startsWith(QStringLiteral("Asia/Riyadh"))) cc = QStringLiteral("SA");
+        else if (tzStr.startsWith(QStringLiteral("Asia/Dubai"))) cc = QStringLiteral("AE");
+        else if (tzStr.startsWith(QStringLiteral("Asia/Qatar"))) cc = QStringLiteral("QA");
+        else if (tzStr.startsWith(QStringLiteral("Asia/Kuwait"))) cc = QStringLiteral("KW");
+        else if (tzStr.startsWith(QStringLiteral("Asia/Muscat"))) cc = QStringLiteral("OM");
+        else if (tzStr.startsWith(QStringLiteral("Asia/Bahrain"))) cc = QStringLiteral("BH");
+        else if (tzStr.startsWith(QStringLiteral("Asia/Amman"))) cc = QStringLiteral("JO");
+        else if (tzStr.startsWith(QStringLiteral("Asia/Damascus"))) cc = QStringLiteral("SY");
+        else if (tzStr.startsWith(QStringLiteral("Asia/Baghdad"))) cc = QStringLiteral("IQ");
+        else if (tzStr.startsWith(QStringLiteral("Asia/Tehran"))) cc = QStringLiteral("IR");
+        else if (tzStr.startsWith(QStringLiteral("Europe/Istanbul"))) cc = QStringLiteral("TR");
+        else if (tzStr.startsWith(QStringLiteral("Europe/Paris"))) cc = QStringLiteral("FR");
+        else if (tzStr.startsWith(QStringLiteral("Europe/London"))) cc = QStringLiteral("GB");
+    }
+
+    // 1. Countries that do not observe Daylight Saving Time
+    static const QStringList NO_DST = {
+        QStringLiteral("DZ"), QStringLiteral("SA"), QStringLiteral("AE"), QStringLiteral("QA"),
+        QStringLiteral("KW"), QStringLiteral("OM"), QStringLiteral("BH"), QStringLiteral("TN"),
+        QStringLiteral("LY"), QStringLiteral("SD"), QStringLiteral("YE"), QStringLiteral("IQ"),
+        QStringLiteral("MR"), QStringLiteral("SO"), QStringLiteral("DJ"), QStringLiteral("KM"),
+        QStringLiteral("TR"), QStringLiteral("JO"), QStringLiteral("SY"), QStringLiteral("IR")
+    };
+    if (NO_DST.contains(cc)) {
+        return 0.0;
+    }
+
+    // 2. Egypt: Re-established DST in 2023 (last Friday of April to last Thursday of October)
+    if (cc == QStringLiteral("EG") || tzStr == QStringLiteral("Africa/Cairo")) {
+        return isEgyptDst(date) ? 1.0 : 0.0;
+    }
+
+    // 3. Morocco: UTC+1 year-round, except during Ramadan when it reverts to UTC+0
+    if (cc == QStringLiteral("MA") || tzStr == QStringLiteral("Africa/Casablanca")) {
+        return PrayerTimes::isRamadan(date) ? 0.0 : 1.0;
+    }
+
+    // 4. European countries
+    static const QStringList EU_DST = {
+        QStringLiteral("FR"), QStringLiteral("DE"), QStringLiteral("GB"), QStringLiteral("UK"),
+        QStringLiteral("ES"), QStringLiteral("IT"), QStringLiteral("BE"), QStringLiteral("NL"),
+        QStringLiteral("CH"), QStringLiteral("AT"), QStringLiteral("SE"), QStringLiteral("NO"),
+        QStringLiteral("DK"), QStringLiteral("FI"), QStringLiteral("PL"), QStringLiteral("PT"),
+        QStringLiteral("IE"), QStringLiteral("GR"), QStringLiteral("RO"), QStringLiteral("CZ"),
+        QStringLiteral("HU"), QStringLiteral("BG"), QStringLiteral("HR"), QStringLiteral("SK")
+    };
+    if (EU_DST.contains(cc) || (tzStr.startsWith(QStringLiteral("Europe/")) &&
+        tzStr != QStringLiteral("Europe/Istanbul") &&
+        tzStr != QStringLiteral("Europe/Moscow") &&
+        tzStr != QStringLiteral("Europe/Minsk"))) {
+        return isEuropeanDst(date) ? 1.0 : 0.0;
+    }
+
+    // 5. United States / Canada
+    if (cc == QStringLiteral("US") || cc == QStringLiteral("CA")) {
+        return isNorthAmericanDst(date) ? 1.0 : 0.0;
+    }
+
+    // 6. Australia / New Zealand (Southern hemisphere)
+    if (cc == QStringLiteral("AU") || cc == QStringLiteral("NZ")) {
+        int year = date.year();
+        QDate firstSundayOct(year, 10, 1);
+        while (firstSundayOct.dayOfWeek() != 7) firstSundayOct = firstSundayOct.addDays(1);
+        QDate firstSundayApril(year, 4, 1);
+        while (firstSundayApril.dayOfWeek() != 7) firstSundayApril = firstSundayApril.addDays(1);
+        return (date >= firstSundayOct || date < firstSundayApril) ? 1.0 : 0.0;
+    }
+
+    // 7. General fallback: check QTimeZone
+    QTimeZone tz(tzStr.toUtf8());
+    if (tz.isValid()) {
+        QDateTime noon(date, QTime(12, 0, 0), tz);
+        int dstSecs = tz.daylightTimeOffset(noon);
+        if (dstSecs != 0) {
+            return dstSecs / 3600.0;
+        }
+    }
+
+    return 0.0;
+}
+
+double PrayerManager::staticTimezoneOffsetHoursFor(const QString &ianaId, const QString &countryCode,
+                                                   const QString &countryName, double lon,
+                                                   int daylightSavingMode, const QDate &date)
+{
+    QString cc = countryCode.trimmed().toUpper();
+    QString tzStr = ianaId.trimmed();
+
+    // Special handling for Morocco (MA)
+    if (cc == QStringLiteral("MA") || tzStr == QStringLiteral("Africa/Casablanca")) {
+        if (daylightSavingMode == 1) return 0.0; // standard time (GMT)
+        if (daylightSavingMode == 2) return 1.0; // summer time (GMT+1)
+        return PrayerTimes::isRamadan(date) ? 0.0 : 1.0;
+    }
+
+    QTimeZone tz(ianaId.toUtf8());
+    double baseStandardOffset = 0.0;
+    if (tz.isValid()) {
+        QDateTime noon(date, QTime(12, 0, 0), tz);
+        baseStandardOffset = tz.standardTimeOffset(noon) / 3600.0;
+    } else {
+        baseStandardOffset = fallbackStandardOffset(countryCode, lon);
+    }
+
+    if (daylightSavingMode == 1) {
+        return baseStandardOffset;
+    } else if (daylightSavingMode == 2) {
+        return baseStandardOffset + 1.0;
+    } else {
+        double dst = automaticDaylightOffset(countryCode, countryName, ianaId, date);
+        return baseStandardOffset + dst;
+    }
+}
+
 double PrayerManager::timezoneOffsetHoursFor(const QString &ianaId, const QDate &date) const
 {
-    QTimeZone tz(ianaId.toUtf8());
-    if (!tz.isValid())
-        return 0.0;
-    QDateTime noon(date, QTime(12, 0, 0), tz);
-    return tz.offsetFromUtc(noon) / 3600.0;
+    return staticTimezoneOffsetHoursFor(ianaId, m_countryCode, m_countryName, m_lon, m_daylightSaving, date);
+}
+
+void PrayerManager::setDaylightSaving(int mode)
+{
+    if (mode < 0 || mode > 2) mode = 0;
+    if (m_daylightSaving != mode) {
+        m_daylightSaving = mode;
+        SettingsHelper::setValue(QStringLiteral("prefs/daylightSaving"), m_daylightSaving);
+        emit daylightSavingChanged();
+        emit timesChanged();
+        recalculateAndSchedule();
+    }
+}
+
+double PrayerManager::effectiveDaylightOffset(const QDate &date) const
+{
+    QDate d = date.isValid() ? date : QDate::currentDate();
+    if (m_daylightSaving == 1) return 0.0;
+    if (m_daylightSaving == 2) return 1.0;
+    return automaticDaylightOffset(m_countryCode, m_countryName, m_tzId, d);
+}
+
+bool PrayerManager::isDaylightSavingActive() const
+{
+    return effectiveDaylightOffset(QDate::currentDate()) > 0.001;
+}
+
+QString PrayerManager::daylightSavingDescription() const
+{
+    QString loc = m_countryName.isEmpty() ? m_cityName : m_countryName;
+    if (loc.isEmpty()) loc = m_tzId;
+    bool active = isDaylightSavingActive();
+    if (m_daylightSaving == 0) {
+        if (active) {
+            return isArabicLanguage()
+                ? QStringLiteral("تلقائي: التوقيت الصيفي مفعّل (+1 ساعة) لـ %1").arg(loc)
+                : tr("Auto: Daylight saving (+1h) active for %1").arg(loc);
+        } else {
+            return isArabicLanguage()
+                ? QStringLiteral("تلقائي: التوقيت القياسي (غير مفعّل) لـ %1").arg(loc)
+                : tr("Auto: Standard time (no daylight saving) for %1").arg(loc);
+        }
+    } else if (m_daylightSaving == 1) {
+        return isArabicLanguage()
+            ? QStringLiteral("معطّل يدوياً (التوقيت القياسي)")
+            : tr("Disabled manually (Standard time)");
+    } else {
+        return isArabicLanguage()
+            ? QStringLiteral("مفعّل يدوياً (+1 ساعة صيفي)")
+            : tr("Enabled manually (+1 hour)");
+    }
 }
 
 void PrayerManager::configureCalculator(PrayerTimes &calc, const QDate &date) const
@@ -616,6 +992,11 @@ void PrayerManager::configureCalculator(PrayerTimes &calc, const QDate &date) co
 QVariantMap PrayerManager::timesToMap(const PrayerTimes::Times &t) const
 {
     QVariantMap m;
+    int mins = imsakMinutes();
+    double imsakHours = t.fajr - (mins / 60.0);
+    if (imsakHours < 0.0) imsakHours += 24.0;
+
+    m["imsak"] = PrayerTimes::formatTime(imsakHours);
     m["fajr"] = PrayerTimes::formatTime(t.fajr);
     m["sunrise"] = PrayerTimes::formatTime(t.sunrise);
     m["dhuhr"] = PrayerTimes::formatTime(t.dhuhr);
@@ -924,7 +1305,9 @@ void PrayerManager::loadWisdomLines() const
 {
     m_wisdomLines.clear();
 
+    QString sailfishPath = SailfishApp::pathTo(QStringLiteral("files/Hikmato_El_Youm.txt")).toLocalFile();
     const QStringList candidates = {
+        sailfishPath,
         QStringLiteral("/usr/share/harbour-thakir/files/Hikmato_El_Youm.txt"),
         QCoreApplication::applicationDirPath() + QStringLiteral("/../files/Hikmato_El_Youm.txt"),
         QCoreApplication::applicationDirPath() + QStringLiteral("/../share/harbour-thakir/files/Hikmato_El_Youm.txt"),
@@ -934,7 +1317,7 @@ void PrayerManager::loadWisdomLines() const
 
     QString targetPath;
     for (const QString &p : candidates) {
-        if (QFile::exists(p)) {
+        if (!p.isEmpty() && QFile::exists(p)) {
             targetPath = p;
             break;
         }
@@ -964,6 +1347,9 @@ void PrayerManager::loadWisdomLines() const
 
 QString PrayerManager::dailyWisdom() const
 {
+    if (!isArabicLanguage()) {
+        return QString();
+    }
     if (m_wisdomLines.isEmpty()) {
         loadWisdomLines();
     }
@@ -976,10 +1362,110 @@ QString PrayerManager::dailyWisdom() const
     return m_wisdomLines.at(idx);
 }
 
+bool PrayerManager::hasIslamicEvent() const
+{
+    QDate adjustedDate = QDate::currentDate().addDays(hijriAdjustment());
+    PrayerTimes::HijriDate h = PrayerTimes::gregorianToHijri(adjustedDate);
+    if (!h.valid || h.month < 1 || h.month > 12)
+        return false;
+    return IslamicEvents::getEvent(h.day, h.month).hasEvent;
+}
+
+QString PrayerManager::islamicEventTitle() const
+{
+    QDate adjustedDate = QDate::currentDate().addDays(hijriAdjustment());
+    PrayerTimes::HijriDate h = PrayerTimes::gregorianToHijri(adjustedDate);
+    if (!h.valid || h.month < 1 || h.month > 12)
+        return QString();
+    return IslamicEvents::getEvent(h.day, h.month).title;
+}
+
+QString PrayerManager::islamicEventBanner() const
+{
+    QDate adjustedDate = QDate::currentDate().addDays(hijriAdjustment());
+    PrayerTimes::HijriDate h = PrayerTimes::gregorianToHijri(adjustedDate);
+    if (!h.valid || h.month < 1 || h.month > 12)
+        return QString();
+    return IslamicEvents::getEvent(h.day, h.month).banner;
+}
+
+QString PrayerManager::islamicEventContent() const
+{
+    QDate adjustedDate = QDate::currentDate().addDays(hijriAdjustment());
+    PrayerTimes::HijriDate h = PrayerTimes::gregorianToHijri(adjustedDate);
+    if (!h.valid || h.month < 1 || h.month > 12)
+        return QString();
+    return IslamicEvents::getEvent(h.day, h.month).content;
+}
+
+QString PrayerManager::randomWisdom(bool forceNew) const
+{
+    if (m_wisdomLines.isEmpty()) {
+        loadWisdomLines();
+    }
+    if (m_wisdomLines.isEmpty()) {
+        return QString();
+    }
+
+    QSettings s(SettingsHelper::settingsFilePath(), QSettings::IniFormat);
+    QString todayStr = QDate::currentDate().toString(Qt::ISODate);
+    QString savedDate = s.value(QStringLiteral("eventsView/wisdomDate")).toString();
+    QString savedWisdom = s.value(QStringLiteral("eventsView/wisdomText")).toString();
+
+    if (!forceNew && savedDate == todayStr && !savedWisdom.isEmpty()) {
+        return savedWisdom;
+    }
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dist(0, m_wisdomLines.size() - 1);
+    int idx = dist(gen);
+    QString selected = m_wisdomLines.at(idx);
+
+    s.setValue(QStringLiteral("eventsView/wisdomDate"), todayStr);
+    s.setValue(QStringLiteral("eventsView/wisdomText"), selected);
+    s.sync();
+
+    return selected;
+}
+
 void PrayerManager::recalculateAndSchedule()
 {
+    m_lastDate = QDate::currentDate();
+    m_lastNextPrayer = nextPrayerName();
+    m_lastIsNextPrayerTomorrow = isNextPrayerTomorrow();
     updateCelestialPositions();
+    if (showInEventsView()) {
+        updateEventsViewStatus();
+    }
     emit timesChanged();
+}
+
+void PrayerManager::checkNextPrayer()
+{
+    onPeriodicCheck();
+}
+
+void PrayerManager::onPeriodicCheck()
+{
+    QDate today = QDate::currentDate();
+    if (today != m_lastDate) {
+        recalculateAndSchedule();
+        return;
+    }
+
+    QString currentNext = nextPrayerName();
+    bool currentTomorrow = isNextPrayerTomorrow();
+
+    if (currentNext != m_lastNextPrayer || currentTomorrow != m_lastIsNextPrayerTomorrow) {
+        m_lastNextPrayer = currentNext;
+        m_lastIsNextPrayerTomorrow = currentTomorrow;
+        emit timesChanged();
+    }
+
+    if (showInEventsView()) {
+        updateEventsViewStatus();
+    }
 }
 
 void PrayerManager::updateCelestialPositions()
@@ -1151,14 +1637,18 @@ QString PrayerManager::saveCurrentAsFavorite(const QString &customName)
     obj[QStringLiteral("name")] = name;
     obj[QStringLiteral("cityName")] = m_cityName;
     obj[QStringLiteral("countryName")] = m_countryName;
+    obj[QStringLiteral("countryCode")] = m_countryCode;
     obj[QStringLiteral("lat")] = m_lat;
     obj[QStringLiteral("lon")] = m_lon;
     obj[QStringLiteral("tzId")] = m_tzId;
+    obj[QStringLiteral("daylightSaving")] = m_daylightSaving;
     obj[QStringLiteral("method")] = m_method;
     obj[QStringLiteral("madhab")] = m_madhab;
     obj[QStringLiteral("highLatitudeRule")] = m_highLatitudeRule;
     obj[QStringLiteral("respectSilentMode")] = respectSilentMode();
     obj[QStringLiteral("stopWithPowerButton")] = stopWithPowerButton();
+    obj[QStringLiteral("stopWithFlipOver")] = stopWithFlipOver();
+    obj[QStringLiteral("stopWithVolumeButtons")] = stopWithVolumeButtons();
     obj[QStringLiteral("showNotification")] = showNotification();
     obj[QStringLiteral("hijriAdjustment")] = hijriAdjustment();
     obj[QStringLiteral("compassCalibration")] = compassCalibration();
@@ -1172,6 +1662,12 @@ QString PrayerManager::saveCurrentAsFavorite(const QString &customName)
     obj[QStringLiteral("fridaySilentEnabled")] = fridaySilentEnabled();
     obj[QStringLiteral("fridaySilentBeforeMinutes")] = fridaySilentBeforeMinutes();
     obj[QStringLiteral("fridaySilentAfterMinutes")] = fridaySilentAfterMinutes();
+    obj[QStringLiteral("morningAthkarEnabled")] = morningAthkarEnabled();
+    obj[QStringLiteral("morningAthkarMinutes")] = morningAthkarMinutes();
+    obj[QStringLiteral("eveningAthkarEnabled")] = eveningAthkarEnabled();
+    obj[QStringLiteral("eveningAthkarMinutes")] = eveningAthkarMinutes();
+    obj[QStringLiteral("imsakMinutes")] = imsakMinutes();
+    obj[QStringLiteral("showImsakAlways")] = showImsakAlways();
 
     QJsonObject enabledObj;
     QJsonObject soundObj;
@@ -1244,6 +1740,7 @@ bool PrayerManager::applyFavorite(const QString &favoriteId)
 
     m_cityName = target.value(QStringLiteral("cityName")).toString();
     m_countryName = target.value(QStringLiteral("countryName")).toString();
+    m_countryCode = target.value(QStringLiteral("countryCode")).toString();
     m_lat = target.value(QStringLiteral("lat")).toDouble(0.0);
     m_lon = target.value(QStringLiteral("lon")).toDouble(0.0);
     m_tzId = target.value(QStringLiteral("tzId")).toString(QStringLiteral("UTC"));
@@ -1253,11 +1750,17 @@ bool PrayerManager::applyFavorite(const QString &favoriteId)
     QSettings s(SettingsHelper::settingsFilePath(), QSettings::IniFormat);
     s.setValue(QStringLiteral("city/name"), m_cityName);
     s.setValue(QStringLiteral("city/country"), m_countryName);
+    s.setValue(QStringLiteral("city/countryCode"), m_countryCode);
     s.setValue(QStringLiteral("city/lat"), m_lat);
     s.setValue(QStringLiteral("city/lon"), m_lon);
     s.setValue(QStringLiteral("city/tz"), m_tzId);
     s.setValue(QStringLiteral("prefs/method"), m_method);
     s.setValue(QStringLiteral("prefs/madhab"), m_madhab);
+
+    if (target.contains(QStringLiteral("daylightSaving")))
+        setDaylightSaving(target.value(QStringLiteral("daylightSaving")).toInt(0));
+    else
+        setDaylightSaving(0);
 
     if (target.contains(QStringLiteral("highLatitudeRule")))
         setHighLatitudeRule(target.value(QStringLiteral("highLatitudeRule")).toInt(1));
@@ -1265,6 +1768,10 @@ bool PrayerManager::applyFavorite(const QString &favoriteId)
         s.setValue(QStringLiteral("respectSilentMode"), target.value(QStringLiteral("respectSilentMode")).toBool(true));
     if (target.contains(QStringLiteral("stopWithPowerButton")))
         setStopWithPowerButton(target.value(QStringLiteral("stopWithPowerButton")).toBool(true));
+    if (target.contains(QStringLiteral("stopWithFlipOver")))
+        setStopWithFlipOver(target.value(QStringLiteral("stopWithFlipOver")).toBool(true));
+    if (target.contains(QStringLiteral("stopWithVolumeButtons")))
+        setStopWithVolumeButtons(target.value(QStringLiteral("stopWithVolumeButtons")).toBool(true));
     if (target.contains(QStringLiteral("showNotification")))
         setShowNotification(target.value(QStringLiteral("showNotification")).toBool(true));
     if (target.contains(QStringLiteral("hijriAdjustment")))
@@ -1291,6 +1798,18 @@ bool PrayerManager::applyFavorite(const QString &favoriteId)
         setFridaySilentBeforeMinutes(target.value(QStringLiteral("fridaySilentBeforeMinutes")).toInt(30));
     if (target.contains(QStringLiteral("fridaySilentAfterMinutes")))
         setFridaySilentAfterMinutes(target.value(QStringLiteral("fridaySilentAfterMinutes")).toInt(30));
+    if (target.contains(QStringLiteral("morningAthkarEnabled")))
+        setMorningAthkarEnabled(target.value(QStringLiteral("morningAthkarEnabled")).toBool(false));
+    if (target.contains(QStringLiteral("morningAthkarMinutes")))
+        setMorningAthkarMinutes(target.value(QStringLiteral("morningAthkarMinutes")).toInt(10));
+    if (target.contains(QStringLiteral("eveningAthkarEnabled")))
+        setEveningAthkarEnabled(target.value(QStringLiteral("eveningAthkarEnabled")).toBool(false));
+    if (target.contains(QStringLiteral("eveningAthkarMinutes")))
+        setEveningAthkarMinutes(target.value(QStringLiteral("eveningAthkarMinutes")).toInt(5));
+    if (target.contains(QStringLiteral("imsakMinutes")))
+        setImsakMinutes(target.value(QStringLiteral("imsakMinutes")).toInt(10));
+    if (target.contains(QStringLiteral("showImsakAlways")))
+        setShowImsakAlways(target.value(QStringLiteral("showImsakAlways")).toBool(false));
 
     QJsonObject enabledObj = target.value(QStringLiteral("enabled")).toObject();
     QJsonObject soundObj = target.value(QStringLiteral("sound")).toObject();
@@ -1356,6 +1875,8 @@ bool PrayerManager::updateFavorite(const QString &favoriteId)
                 obj[QStringLiteral("highLatitudeRule")] = m_highLatitudeRule;
                 obj[QStringLiteral("respectSilentMode")] = respectSilentMode();
                 obj[QStringLiteral("stopWithPowerButton")] = stopWithPowerButton();
+                obj[QStringLiteral("stopWithFlipOver")] = stopWithFlipOver();
+                obj[QStringLiteral("stopWithVolumeButtons")] = stopWithVolumeButtons();
                 obj[QStringLiteral("showNotification")] = showNotification();
                 obj[QStringLiteral("hijriAdjustment")] = hijriAdjustment();
                 obj[QStringLiteral("compassCalibration")] = compassCalibration();
@@ -1369,6 +1890,10 @@ bool PrayerManager::updateFavorite(const QString &favoriteId)
                 obj[QStringLiteral("fridaySilentEnabled")] = fridaySilentEnabled();
                 obj[QStringLiteral("fridaySilentBeforeMinutes")] = fridaySilentBeforeMinutes();
                 obj[QStringLiteral("fridaySilentAfterMinutes")] = fridaySilentAfterMinutes();
+                obj[QStringLiteral("morningAthkarEnabled")] = morningAthkarEnabled();
+                obj[QStringLiteral("morningAthkarMinutes")] = morningAthkarMinutes();
+                obj[QStringLiteral("eveningAthkarEnabled")] = eveningAthkarEnabled();
+                obj[QStringLiteral("eveningAthkarMinutes")] = eveningAthkarMinutes();
 
                 QJsonObject enabledObj;
                 QJsonObject soundObj;
@@ -1516,6 +2041,9 @@ void PrayerManager::setAppLanguage(const QString &lang)
     emit appLanguageChanged();
     emit timesChanged();
     emit buildDateChanged();
+    if (showInEventsView()) {
+        updateEventsViewStatus();
+    }
 }
 
 bool PrayerManager::isArabicLanguage() const
@@ -1541,6 +2069,9 @@ void PrayerManager::setUseHindiNumerals(bool enable)
     emit useHindiNumeralsChanged();
     emit timesChanged();
     emit buildDateChanged();
+    if (showInEventsView()) {
+        updateEventsViewStatus();
+    }
 }
 
 QString PrayerManager::formatDigits(const QString &str) const
@@ -1743,4 +2274,386 @@ QString PrayerManager::formatCurrentDateTime(const QDateTime &dt) const
 
     return formatDigits(QStringLiteral("%1 %2").arg(datePart, timePart));
 }
+
+bool PrayerManager::morningAthkarEnabled() const
+{
+    QSettings s(SettingsHelper::settingsFilePath(), QSettings::IniFormat);
+    return s.value(QStringLiteral("athkar/morningEnabled"), false).toBool();
+}
+
+void PrayerManager::setMorningAthkarEnabled(bool enabled)
+{
+    QSettings s(SettingsHelper::settingsFilePath(), QSettings::IniFormat);
+    if (s.value(QStringLiteral("athkar/morningEnabled"), false).toBool() != enabled) {
+        s.setValue(QStringLiteral("athkar/morningEnabled"), enabled);
+        s.remove(QStringLiteral("played/morning_athkar"));
+        s.sync();
+        emit morningAthkarChanged();
+    }
+}
+
+int PrayerManager::morningAthkarMinutes() const
+{
+    QSettings s(SettingsHelper::settingsFilePath(), QSettings::IniFormat);
+    return s.value(QStringLiteral("athkar/morningMinutes"), 10).toInt();
+}
+
+void PrayerManager::setMorningAthkarMinutes(int minutes)
+{
+    QSettings s(SettingsHelper::settingsFilePath(), QSettings::IniFormat);
+    if (s.value(QStringLiteral("athkar/morningMinutes"), 10).toInt() != minutes) {
+        s.setValue(QStringLiteral("athkar/morningMinutes"), minutes);
+        s.remove(QStringLiteral("played/morning_athkar"));
+        s.sync();
+        emit morningAthkarChanged();
+    }
+}
+
+bool PrayerManager::eveningAthkarEnabled() const
+{
+    QSettings s(SettingsHelper::settingsFilePath(), QSettings::IniFormat);
+    return s.value(QStringLiteral("athkar/eveningEnabled"), false).toBool();
+}
+
+void PrayerManager::setEveningAthkarEnabled(bool enabled)
+{
+    QSettings s(SettingsHelper::settingsFilePath(), QSettings::IniFormat);
+    if (s.value(QStringLiteral("athkar/eveningEnabled"), false).toBool() != enabled) {
+        s.setValue(QStringLiteral("athkar/eveningEnabled"), enabled);
+        s.remove(QStringLiteral("played/evening_athkar"));
+        s.sync();
+        emit eveningAthkarChanged();
+    }
+}
+
+int PrayerManager::eveningAthkarMinutes() const
+{
+    QSettings s(SettingsHelper::settingsFilePath(), QSettings::IniFormat);
+    return s.value(QStringLiteral("athkar/eveningMinutes"), 5).toInt();
+}
+
+void PrayerManager::setEveningAthkarMinutes(int minutes)
+{
+    QSettings s(SettingsHelper::settingsFilePath(), QSettings::IniFormat);
+    if (s.value(QStringLiteral("athkar/eveningMinutes"), 5).toInt() != minutes) {
+        s.setValue(QStringLiteral("athkar/eveningMinutes"), minutes);
+        s.remove(QStringLiteral("played/evening_athkar"));
+        s.sync();
+        emit eveningAthkarChanged();
+    }
+}
+
+static QString resolveAthkarPath(const QString &relPath)
+{
+    QStringList candidates;
+    candidates << relPath;
+    if (relPath.endsWith(QStringLiteral(".ogg"), Qt::CaseInsensitive)) {
+        QString mp3 = relPath;
+        mp3.chop(4);
+        mp3.append(QStringLiteral(".mp3"));
+        candidates << mp3;
+    } else if (relPath.endsWith(QStringLiteral(".mp3"), Qt::CaseInsensitive)) {
+        QString ogg = relPath;
+        ogg.chop(4);
+        ogg.append(QStringLiteral(".ogg"));
+        candidates.prepend(ogg);
+    }
+
+    for (const QString &cand : candidates) {
+        QUrl u = SailfishApp::pathTo(cand);
+        if (u.isLocalFile() && QFile::exists(u.toLocalFile())) return u.toLocalFile();
+        QString p = QStringLiteral("/usr/share/harbour-thakir/") + cand;
+        if (QFile::exists(p)) return p;
+        QString appP = QCoreApplication::applicationDirPath() + QStringLiteral("/../share/harbour-thakir/") + cand;
+        if (QFile::exists(appP)) return appP;
+        if (QFile::exists(cand)) return QFileInfo(cand).absoluteFilePath();
+        QString srcP = QStringLiteral("C:/Users/hafte/.gemini/antigravity/scratch/harbour-thakir/") + cand;
+        if (QFile::exists(srcP)) return srcP;
+    }
+    return QStringLiteral("/usr/share/harbour-thakir/") + relPath;
+}
+
+QString PrayerManager::resolveAthkarPath(const QString &relPath) const
+{
+    return ::resolveAthkarPath(relPath);
+}
+
+QStringList PrayerManager::morningAthkarAudioPaths() const
+{
+    static const QStringList relFiles = {
+        QStringLiteral("sounds/Athkar/1_1.ogg"),
+        QStringLiteral("sounds/Athkar/1_2.ogg"),
+        QStringLiteral("sounds/Athkar/1_3.ogg"),
+        QStringLiteral("sounds/Athkar/1_4.ogg"),
+        QStringLiteral("sounds/Athkar/2_4.ogg"),
+        QStringLiteral("sounds/Athkar/2_1.ogg"),
+        QStringLiteral("sounds/Athkar/1_19.ogg"),
+        QStringLiteral("sounds/Athkar/3_1.ogg")
+    };
+    if (relFiles.isEmpty()) return QStringList();
+
+    // Select one clip randomly for the day (not all in one)
+    qint64 julian = QDate::currentDate().toJulianDay();
+    quint64 seed = static_cast<quint64>(julian) * 2654435761ULL;
+    int idx = static_cast<int>(seed % static_cast<quint64>(relFiles.size()));
+
+    return QStringList{ resolveAthkarPath(relFiles.at(idx)) };
+}
+
+QStringList PrayerManager::eveningAthkarAudioPaths() const
+{
+    static const QStringList relFiles = {
+        QStringLiteral("sounds/Athkar/2_1.ogg"),
+        QStringLiteral("sounds/Athkar/1_3.ogg"),
+        QStringLiteral("sounds/Athkar/1_2.ogg"),
+        QStringLiteral("sounds/Athkar/2_2.ogg"),
+        QStringLiteral("sounds/Athkar/3_2.ogg")
+    };
+    if (relFiles.isEmpty()) return QStringList();
+
+    // Select one clip randomly for the day (not all in one)
+    qint64 julian = QDate::currentDate().toJulianDay();
+    quint64 seed = (static_cast<quint64>(julian) ^ 0x5deece66dULL) * 2654435761ULL;
+    int idx = static_cast<int>(seed % static_cast<quint64>(relFiles.size()));
+
+    return QStringList{ resolveAthkarPath(relFiles.at(idx)) };
+}
+
+bool PrayerManager::showInEventsView() const
+{
+    return EventsViewStatus::isEnabled();
+}
+
+void PrayerManager::setShowInEventsView(bool enabled)
+{
+    if (EventsViewStatus::isEnabled() != enabled) {
+        EventsViewStatus::setEnabled(enabled);
+        if (enabled) {
+            updateEventsViewStatus();
+        } else {
+            EventsViewStatus::clearStatus();
+        }
+        emit showInEventsViewChanged();
+    }
+}
+
+QString PrayerManager::localizedPrayerName(const QString &prayerKey, bool isFriday, bool isTomorrow) const
+{
+    QString effectiveLang = appLanguage().trimmed().toLower();
+    if (effectiveLang.isEmpty()) {
+        effectiveLang = QLocale::system().name().left(2).toLower();
+    }
+
+    if (effectiveLang == QStringLiteral("ar")) {
+        if (isTomorrow) {
+            if (prayerKey == QStringLiteral("fajr")) return QString::fromUtf8("فجر الغد");
+            if (prayerKey == QStringLiteral("sunrise")) return QString::fromUtf8("شروق الغد");
+            if (prayerKey == QStringLiteral("dhuhr")) return isFriday ? QString::fromUtf8("جمعة الغد") : QString::fromUtf8("ظهر الغد");
+            if (prayerKey == QStringLiteral("asr")) return QString::fromUtf8("عصر الغد");
+            if (prayerKey == QStringLiteral("maghrib")) return QString::fromUtf8("مغرب الغد");
+            if (prayerKey == QStringLiteral("isha")) return QString::fromUtf8("عشاء الغد");
+        }
+        if (prayerKey == QStringLiteral("imsak")) return QString::fromUtf8("الإمساك");
+        if (prayerKey == QStringLiteral("fajr")) return QString::fromUtf8("الفجر");
+        if (prayerKey == QStringLiteral("sunrise")) return QString::fromUtf8("الشروق");
+        if (prayerKey == QStringLiteral("dhuhr")) return isFriday ? QString::fromUtf8("صلاة الجمعة") : QString::fromUtf8("الظهر");
+        if (prayerKey == QStringLiteral("asr")) return QString::fromUtf8("العصر");
+        if (prayerKey == QStringLiteral("maghrib")) return QString::fromUtf8("المغرب");
+        if (prayerKey == QStringLiteral("isha")) return QString::fromUtf8("العشاء");
+        if (prayerKey == QStringLiteral("midnight")) return QString::fromUtf8("منتصف الليل");
+        if (prayerKey == QStringLiteral("lastThird")) return QString::fromUtf8("الثلث الأخير");
+    } else if (effectiveLang == QStringLiteral("fr")) {
+        if (isTomorrow) {
+            if (prayerKey == QStringLiteral("fajr")) return QStringLiteral("Fadjr de demain");
+            if (prayerKey == QStringLiteral("sunrise")) return QStringLiteral("Chourouq de demain");
+            if (prayerKey == QStringLiteral("dhuhr")) return isFriday ? QStringLiteral("Vendredi de demain") : QStringLiteral("Dhouhr de demain");
+            if (prayerKey == QStringLiteral("asr")) return QStringLiteral("Assar de demain");
+            if (prayerKey == QStringLiteral("maghrib")) return QStringLiteral("Maghreb de demain");
+            if (prayerKey == QStringLiteral("isha")) return QStringLiteral("Icha de demain");
+        }
+        if (prayerKey == QStringLiteral("imsak")) return QStringLiteral("Imsak");
+        if (prayerKey == QStringLiteral("fajr")) return QStringLiteral("Fadjr");
+        if (prayerKey == QStringLiteral("sunrise")) return QStringLiteral("Chourouq");
+        if (prayerKey == QStringLiteral("dhuhr")) return isFriday ? QStringLiteral("Prière du vendredi") : QStringLiteral("Dhouhr");
+        if (prayerKey == QStringLiteral("asr")) return QStringLiteral("Assar");
+        if (prayerKey == QStringLiteral("maghrib")) return QStringLiteral("Maghreb");
+        if (prayerKey == QStringLiteral("isha")) return QStringLiteral("Icha");
+        if (prayerKey == QStringLiteral("midnight")) return QStringLiteral("Minuit");
+        if (prayerKey == QStringLiteral("lastThird")) return QStringLiteral("Dernier tiers de la nuit");
+    } else if (effectiveLang == QStringLiteral("tr")) {
+        if (isTomorrow) {
+            if (prayerKey == QStringLiteral("fajr")) return QString::fromUtf8("Yarının İmsakı");
+            if (prayerKey == QStringLiteral("sunrise")) return QString::fromUtf8("Yarının Güneşi");
+            if (prayerKey == QStringLiteral("dhuhr")) return isFriday ? QString::fromUtf8("Yarının Cuma Namazı") : QString::fromUtf8("Yarının Öğlesi");
+            if (prayerKey == QStringLiteral("asr")) return QString::fromUtf8("Yarının İkindisi");
+            if (prayerKey == QStringLiteral("maghrib")) return QString::fromUtf8("Yarının Akşamı");
+            if (prayerKey == QStringLiteral("isha")) return QString::fromUtf8("Yarının Yatsısı");
+        }
+        if (prayerKey == QStringLiteral("imsak")) return QString::fromUtf8("İmsak (Sahur)");
+        if (prayerKey == QStringLiteral("fajr")) return QString::fromUtf8("İmsak");
+        if (prayerKey == QStringLiteral("sunrise")) return QString::fromUtf8("Güneş");
+        if (prayerKey == QStringLiteral("dhuhr")) return isFriday ? QString::fromUtf8("Cuma Namazı") : QString::fromUtf8("Öğle");
+        if (prayerKey == QStringLiteral("asr")) return QString::fromUtf8("İkindi");
+        if (prayerKey == QStringLiteral("maghrib")) return QString::fromUtf8("Akşam");
+        if (prayerKey == QStringLiteral("isha")) return QString::fromUtf8("Yatsı");
+        if (prayerKey == QStringLiteral("midnight")) return QString::fromUtf8("Gece Yarısı");
+        if (prayerKey == QStringLiteral("lastThird")) return QString::fromUtf8("Gecenin Son Üçte Biri");
+    } else {
+        if (isTomorrow) {
+            if (prayerKey == QStringLiteral("fajr")) return QStringLiteral("Tomorrow's Fajr");
+            if (prayerKey == QStringLiteral("sunrise")) return QStringLiteral("Tomorrow's Sunrise");
+            if (prayerKey == QStringLiteral("dhuhr")) return isFriday ? QStringLiteral("Tomorrow's Friday prayer") : QStringLiteral("Tomorrow's Dhuhr");
+            if (prayerKey == QStringLiteral("asr")) return QStringLiteral("Tomorrow's Asr");
+            if (prayerKey == QStringLiteral("maghrib")) return QStringLiteral("Tomorrow's Maghrib");
+            if (prayerKey == QStringLiteral("isha")) return QStringLiteral("Tomorrow's Isha");
+        }
+        if (prayerKey == QStringLiteral("imsak")) return QStringLiteral("Imsak");
+        if (prayerKey == QStringLiteral("fajr")) return QStringLiteral("Fajr");
+        if (prayerKey == QStringLiteral("sunrise")) return QStringLiteral("Sunrise");
+        if (prayerKey == QStringLiteral("dhuhr")) return isFriday ? QStringLiteral("Friday prayer") : QStringLiteral("Dhuhr");
+        if (prayerKey == QStringLiteral("asr")) return QStringLiteral("Asr");
+        if (prayerKey == QStringLiteral("maghrib")) return QStringLiteral("Maghrib");
+        if (prayerKey == QStringLiteral("isha")) return QStringLiteral("Isha");
+        if (prayerKey == QStringLiteral("midnight")) return QStringLiteral("Midnight");
+        if (prayerKey == QStringLiteral("lastThird")) return QStringLiteral("Last 1/3 Night");
+    }
+
+    if (prayerKey.isEmpty()) return QStringLiteral("--");
+    return prayerKey.left(1).toUpper() + prayerKey.mid(1);
+}
+
+QString PrayerManager::localizedRemainingTime() const
+{
+    int secs = nextPrayerRemainingSeconds();
+    if (secs < 0) secs = 0;
+    int hours = secs / 3600;
+    int minutes = (secs % 3600) / 60;
+    if (secs > 0 && secs < 60 && minutes == 0) {
+        minutes = 1;
+    }
+
+    QString effectiveLang = appLanguage().trimmed().toLower();
+    if (effectiveLang.isEmpty()) {
+        effectiveLang = QLocale::system().name().left(2).toLower();
+    }
+
+    QString hStr = QString::number(hours);
+    QString mStr = QString::number(minutes);
+
+    if (effectiveLang == QStringLiteral("ar")) {
+        if (useHindiNumerals()) {
+            hStr = formatDigits(hStr);
+            mStr = formatDigits(mStr);
+        }
+        if (hours > 0) {
+            return QString::fromUtf8("متبقي: %1 سا %2 د").arg(hStr, mStr);
+        } else {
+            return QString::fromUtf8("متبقي: %1 د").arg(mStr);
+        }
+    } else if (effectiveLang == QStringLiteral("fr")) {
+        if (hours > 0) {
+            return QStringLiteral("Temps restant : %1 h %2 min").arg(hStr, mStr);
+        } else {
+            return QStringLiteral("Temps restant : %1 min").arg(mStr);
+        }
+    } else if (effectiveLang == QStringLiteral("tr")) {
+        if (hours > 0) {
+            return QString::fromUtf8("Kalan süre: %1 sa %2 dk").arg(hStr, mStr);
+        } else {
+            return QString::fromUtf8("Kalan süre: %1 dk").arg(mStr);
+        }
+    } else {
+        if (hours > 0) {
+            return QStringLiteral("Remaining: %1h %2m").arg(hStr, mStr);
+        } else {
+            return QStringLiteral("Remaining: %1m").arg(mStr);
+        }
+    }
+}
+
+void PrayerManager::updateEventsViewStatus()
+{
+    if (!EventsViewStatus::isEnabled() || !hasCity()) {
+        EventsViewStatus::clearStatus();
+        return;
+    }
+
+    // Check whether remaining time is inside the pre-alert lead window for the upcoming prayer
+    bool preAlert = isPreAlertWindow();
+
+    QString pName = nextPrayerName();
+    QString pTime = nextPrayerTime();
+    bool isFriday = (pName == QStringLiteral("dhuhr") && QDate::currentDate().dayOfWeek() == Qt::Friday);
+    bool isTomorrow = isNextPrayerTomorrow();
+    QString pDisplay = localizedPrayerName(pName, isFriday, isTomorrow);
+
+    // Line 1 (Summary): Next prayer name and scheduled time (e.g. "Tomorrow's Fajr 05:23 am" or "فجر الغد 05:23 ص")
+    QString summary = QStringLiteral("%1 %2").arg(pDisplay, pTime);
+    if (preAlert) {
+        summary = QStringLiteral("🔴 %1").arg(summary);
+    }
+
+    // Line 2 (Body): Localized countdown (e.g. "Remaining: 7h 47m" or "متبقي: 7 سا 47 د")
+    QString body = localizedRemainingTime();
+    if (preAlert) {
+        body = QStringLiteral("🔴 %1").arg(body);
+    }
+
+    // Progress bar towards next prayer (0.0 to 1.0)
+    double progress = nextPrayerProgress();
+
+    // Pre-alert warning banner line
+    if (preAlert) {
+        QString alertBanner;
+        QString lang = appLanguage().trimmed().toLower();
+        if (lang.isEmpty()) {
+            lang = QLocale::system().name().left(2).toLower();
+        }
+        bool isSunrise = (pName == QStringLiteral("sunrise"));
+        if (isSunrise) {
+            if (lang == QStringLiteral("ar")) {
+                alertBanner = QString::fromUtf8("⚠️ اقترب موعد الشروق");
+            } else if (lang == QStringLiteral("fr")) {
+                alertBanner = QStringLiteral("⚠️ Le lever du soleil approche");
+            } else if (lang == QStringLiteral("tr")) {
+                alertBanner = QString::fromUtf8("⚠️ Güneş doğuşu yaklaşıyor");
+            } else {
+                alertBanner = QStringLiteral("⚠️ Upcoming sunrise soon");
+            }
+        } else {
+            if (lang == QStringLiteral("ar")) {
+                alertBanner = QString::fromUtf8("⚠️ اقترب موعد الأذان");
+            } else if (lang == QStringLiteral("fr")) {
+                alertBanner = QStringLiteral("⚠️ La prière approche");
+            } else if (lang == QStringLiteral("tr")) {
+                alertBanner = QString::fromUtf8("⚠️ Ezan vakti yaklaşıyor");
+            } else {
+                alertBanner = QStringLiteral("⚠️ Upcoming prayer soon");
+            }
+        }
+        body += QStringLiteral("\n") + alertBanner;
+    }
+
+    // Islamic Event: when today has an Islamic event, display it in Events View
+    if (hasIslamicEvent()) {
+        QString eventText = isArabicLanguage() ? islamicEventTitle() : islamicEventBanner();
+        if (!eventText.isEmpty()) {
+            body += QStringLiteral("\n🕌 ") + eventText;
+        }
+    }
+
+    // In Arabic language only: add text from a random line of Hikmato_El_Youm.txt
+    if (isArabicLanguage()) {
+        QString wisdom = randomWisdom();
+        if (!wisdom.isEmpty()) {
+            body += QStringLiteral("\n") + wisdom;
+        }
+    }
+
+    // App name for notification header: "ذكر أذان" for Arabic, "Thakir Athan" for English/others
+    QString appName = isArabicLanguage() ? QString::fromUtf8("ذكر أذان") : QStringLiteral("Thakir Athan");
+
+    EventsViewStatus::updateStatus(appName, summary, body, progress, cityName(), preAlert);
+}
+
 

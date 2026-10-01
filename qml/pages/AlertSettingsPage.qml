@@ -42,6 +42,78 @@ Page {
 
     Audio {
         id: previewPlayer
+        onPlaybackStateChanged: {
+            if (playbackState === Audio.PlayingState) {
+                stopAthkarPreview()
+            }
+        }
+    }
+
+    function formatAudioSource(p) {
+        if (!p) return ""
+        if (p.indexOf("://") !== -1) return p
+        if (p.charAt(0) === "/") return "file://" + p
+        return "file:///" + p
+    }
+
+    property var athkarPlaylist: []
+    property int athkarIndex: 0
+    property bool isPlayingAthkar: false
+    property string activeAthkarType: ""
+
+    Audio {
+        id: athkarPlayer
+        onPlaybackStateChanged: {
+            if (playbackState === Audio.StoppedState && status !== Audio.EndOfMedia) {
+                isPlayingAthkar = false
+                activeAthkarType = ""
+            }
+        }
+        onStatusChanged: {
+            if (status === Audio.EndOfMedia) {
+                athkarIndex++
+                if (athkarIndex < athkarPlaylist.length) {
+                    var p = athkarPlaylist[athkarIndex]
+                    source = formatAudioSource(p)
+                    play()
+                } else {
+                    isPlayingAthkar = false
+                    activeAthkarType = ""
+                }
+            } else if (status === Audio.Error || status === Audio.InvalidMedia) {
+                console.log("athkarPlayer error status: " + status + " error: " + errorString)
+                isPlayingAthkar = false
+                activeAthkarType = ""
+            }
+        }
+    }
+
+    function startAthkarPreview(type, paths) {
+        if (previewPlayer.playbackState === Audio.PlayingState) {
+            previewPlayer.stop()
+        }
+        athkarPlayer.stop()
+        athkarPlaylist = paths || []
+        athkarIndex = 0
+        if (athkarPlaylist.length > 0) {
+            activeAthkarType = type
+            isPlayingAthkar = true
+            var p = athkarPlaylist[0]
+            athkarPlayer.source = formatAudioSource(p)
+            athkarPlayer.play()
+        }
+    }
+
+    function stopAthkarPreview() {
+        athkarPlayer.stop()
+        isPlayingAthkar = false
+        activeAthkarType = ""
+        athkarPlaylist = []
+        athkarIndex = 0
+    }
+
+    Component.onDestruction: {
+        stopAthkarPreview()
     }
 
     SilicaFlickable {
@@ -166,6 +238,97 @@ Page {
                 }
             }
 
+            SectionHeader { text: qsTr("Morning and evening Athkar") }
+
+            Label {
+                x: Theme.horizontalPageMargin
+                width: parent.width - 2 * Theme.horizontalPageMargin
+                wrapMode: Text.Wrap
+                font.pixelSize: Theme.fontSizeExtraSmall
+                color: Theme.secondaryColor
+                text: qsTr("Listen to Athkar audio clips before Chourouq and Maghreb.")
+            }
+
+            Row {
+                width: page.width
+
+                TextSwitch {
+                    id: morningAthkarSwitch
+                    width: parent.width - previewMorningBtn.width - Theme.paddingSmall
+                    text: qsTr("Listening to morning Athkar")
+                    checked: prayerManager.morningAthkarEnabled
+                    onClicked: {
+                        prayerManager.morningAthkarEnabled = checked
+                    }
+                }
+
+                IconButton {
+                    id: previewMorningBtn
+                    anchors.verticalCenter: morningAthkarSwitch.verticalCenter
+                    icon.source: (isPlayingAthkar && activeAthkarType === "morning")
+                                 ? "image://theme/icon-m-pause"
+                                 : "image://theme/icon-m-play"
+                    onClicked: {
+                        if (isPlayingAthkar && activeAthkarType === "morning") {
+                            stopAthkarPreview()
+                        } else {
+                            startAthkarPreview("morning", prayerManager.morningAthkarAudioPaths())
+                        }
+                    }
+                }
+            }
+
+            Slider {
+                visible: morningAthkarSwitch.checked
+                width: page.width
+                minimumValue: 1
+                maximumValue: 60
+                stepSize: 1
+                value: prayerManager.morningAthkarMinutes
+                label: qsTr("Before Chourouq by %1 min").arg(formatDigits(Math.round(value)))
+                onValueChanged: prayerManager.morningAthkarMinutes = Math.round(value)
+            }
+
+            Row {
+                width: page.width
+
+                TextSwitch {
+                    id: eveningAthkarSwitch
+                    width: parent.width - previewEveningBtn.width - Theme.paddingSmall
+                    text: qsTr("Listening to evening Athkar")
+                    checked: prayerManager.eveningAthkarEnabled
+                    onClicked: {
+                        prayerManager.eveningAthkarEnabled = checked
+                    }
+                }
+
+                IconButton {
+                    id: previewEveningBtn
+                    anchors.verticalCenter: eveningAthkarSwitch.verticalCenter
+                    icon.source: (isPlayingAthkar && activeAthkarType === "evening")
+                                 ? "image://theme/icon-m-pause"
+                                 : "image://theme/icon-m-play"
+                    onClicked: {
+                        if (isPlayingAthkar && activeAthkarType === "evening") {
+                            stopAthkarPreview()
+                        } else {
+                            startAthkarPreview("evening", prayerManager.eveningAthkarAudioPaths())
+                        }
+                    }
+                }
+            }
+
+            Slider {
+                visible: eveningAthkarSwitch.checked
+                width: page.width
+                minimumValue: 1
+                maximumValue: 60
+                stepSize: 1
+                value: prayerManager.eveningAthkarMinutes
+                label: qsTr("Before Maghreb by %1 min").arg(formatDigits(Math.round(value)))
+                onValueChanged: prayerManager.eveningAthkarMinutes = Math.round(value)
+            }
+
             SectionHeader { text: qsTr("Respect phone's Silent mode") }
 
             Label {
@@ -202,6 +365,42 @@ Page {
                 onCheckedChanged: prayerManager.stopWithPowerButton = checked
             }
 
+            SectionHeader { text: qsTr("Volume buttons") }
+
+            Label {
+                x: Theme.horizontalPageMargin
+                width: parent.width - 2 * Theme.horizontalPageMargin
+                wrapMode: Text.Wrap
+                font.pixelSize: Theme.fontSizeExtraSmall
+                color: Theme.secondaryColor
+                text: qsTr("When on, pressing the volume up or volume down button while the athan is playing will immediately silence and stop it without changing the phone’s volume.")
+            }
+
+            TextSwitch {
+                width: page.width
+                text: qsTr("Stop athan with volume buttons")
+                checked: prayerManager.stopWithVolumeButtons
+                onCheckedChanged: prayerManager.stopWithVolumeButtons = checked
+            }
+
+            SectionHeader { text: qsTr("Turn phone upside down") }
+
+            Label {
+                x: Theme.horizontalPageMargin
+                width: parent.width - 2 * Theme.horizontalPageMargin
+                wrapMode: Text.Wrap
+                font.pixelSize: Theme.fontSizeExtraSmall
+                color: Theme.secondaryColor
+                text: qsTr("When on, turning the phone upside down or face down while the athan is playing will immediately silence and stop it.")
+            }
+
+            TextSwitch {
+                width: page.width
+                text: qsTr("Stop athan by turning phone upside down")
+                checked: prayerManager.stopWithFlipOver
+                onCheckedChanged: prayerManager.stopWithFlipOver = checked
+            }
+
             SectionHeader { text: qsTr("Athan notification") }
 
             Label {
@@ -218,6 +417,24 @@ Page {
                 text: qsTr("Show notification with Stop button")
                 checked: prayerManager.showNotification
                 onCheckedChanged: prayerManager.showNotification = checked
+            }
+
+            SectionHeader { text: qsTr("Events View") }
+
+            Label {
+                x: Theme.horizontalPageMargin
+                width: parent.width - 2 * Theme.horizontalPageMargin
+                wrapMode: Text.Wrap
+                font.pixelSize: Theme.fontSizeExtraSmall
+                color: Theme.secondaryColor
+                text: qsTr("When on, displays a status notification with the next prayer, remaining time, and prayer times on the Events View screen (left of the home/lock screen).")
+            }
+
+            TextSwitch {
+                width: page.width
+                text: qsTr("Show next prayer in Events View")
+                checked: prayerManager.showInEventsView
+                onCheckedChanged: prayerManager.showInEventsView = checked
             }
 
             SectionHeader { text: qsTr("About the background playback") }

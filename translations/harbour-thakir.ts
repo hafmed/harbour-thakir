@@ -4,58 +4,78 @@
 <context>
     <name>AboutPage</name>
     <message>
-        <location filename="../qml/pages/AboutPage.qml" line="18"/>
+        <location filename="../qml/pages/AboutPage.qml" line="20"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AboutPage.qml" line="37"/>
-        <source>Thakir</source>
+        <location filename="../qml/pages/AboutPage.qml" line="39"/>
+        <source>Thakir Athan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AboutPage.qml" line="45"/>
-        <source>Islamic prayer times and athan reminders for Sailfish OS</source>
+        <location filename="../qml/pages/AboutPage.qml" line="49"/>
+        <source>Islamic prayer times, athan reminders and Holy Quran for Sailfish OS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AboutPage.qml" line="59"/>
+        <location filename="../qml/pages/AboutPage.qml" line="66"/>
         <source>Application information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AboutPage.qml" line="63"/>
+        <location filename="../qml/pages/AboutPage.qml" line="70"/>
         <source>Developer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AboutPage.qml" line="64"/>
+        <location filename="../qml/pages/AboutPage.qml" line="71"/>
         <source>Mohamed HAFIANE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AboutPage.qml" line="69"/>
+        <location filename="../qml/pages/AboutPage.qml" line="76"/>
         <source>E-mail for feedback</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AboutPage.qml" line="71"/>
+        <location filename="../qml/pages/AboutPage.qml" line="78"/>
         <source>Tap to send an email</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AboutPage.qml" line="82"/>
+        <location filename="../qml/pages/AboutPage.qml" line="89"/>
         <source>Version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AboutPage.qml" line="88"/>
+        <location filename="../qml/pages/AboutPage.qml" line="95"/>
         <source>Sailfish OS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AboutPage.qml" line="93"/>
+        <location filename="../qml/pages/AboutPage.qml" line="100"/>
         <source>Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AboutPage.qml" line="108"/>
+        <source>Quran Pages &amp; Mushaf Sources</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AboutPage.qml" line="192"/>
+        <source>Audio &amp; Recitations Sources</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AboutPage.qml" line="269"/>
+        <source>Quranic Fonts &amp; Calligraphy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AboutPage.qml" line="346"/>
+        <source>Tafsir, Translations &amp; Calculations</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -92,202 +112,573 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="55"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="127"/>
         <source>Alert Settings</source>
         <translation type="unfinished">Alert Settings</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="57"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="129"/>
         <source>Athan activation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="65"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="137"/>
         <source>Enable or disable athan playback and reminders for each prayer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="72"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="144"/>
         <source>Sunrise (beep alert)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="80"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="152"/>
         <source>Athan sounds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="89"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="161"/>
         <source>No sound files found under /usr/share/harbour-thakir/sounds/. Add .ogg files there and reinstall to choose between them here.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="131"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="203"/>
         <source>Pre-alert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="139"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="211"/>
         <source>Play a short beep some minutes before each prayer, as a heads up.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="154"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="226"/>
         <source>Off</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="155"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="227"/>
         <source>5 minutes before</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="156"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="228"/>
         <source>10 minutes before</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="157"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="229"/>
         <source>15 minutes before</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="158"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="230"/>
         <source>20 minutes before</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="159"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="231"/>
         <source>30 minutes before</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="169"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="298"/>
+        <source>Listening to evening Athkar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="328"/>
+        <source>Before Maghreb by %1 min</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="332"/>
         <source>Respect phone&apos;s Silent mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="177"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="340"/>
         <source>When on, the athan and pre-alert beep are skipped (not forced) while the phone is already in Silent mode - whether you set that yourself or this app&apos;s own “Silent mode after prayer” feature is currently holding it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="182"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="345"/>
         <source>Respect Silent mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="187"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="350"/>
         <source>Power button</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="195"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="358"/>
         <source>When on, pressing the phone’s hardware power button while the athan is playing will immediately silence and stop it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="200"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="363"/>
         <source>Stop athan with power button</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="205"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="368"/>
+        <source>Volume buttons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="376"/>
+        <source>When on, pressing the volume up or volume down button while the athan is playing will immediately silence and stop it without changing the phone’s volume.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="381"/>
+        <source>Stop athan with volume buttons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="386"/>
+        <source>Turn phone upside down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="394"/>
+        <source>When on, turning the phone upside down or face down while the athan is playing will immediately silence and stop it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="399"/>
+        <source>Stop athan by turning phone upside down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="404"/>
         <source>Athan notification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="213"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="412"/>
         <source>When on, displays a system notification with a Stop button when the athan is playing, allowing you to silence the athan from the notification banner or lock screen.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="218"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="417"/>
         <source>Show notification with Stop button</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="223"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="422"/>
+        <source>Events View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="430"/>
+        <source>When on, displays a status notification with the next prayer, remaining time, and prayer times on the Events View screen (left of the home/lock screen).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="435"/>
+        <source>Show next prayer in Events View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="440"/>
         <source>About the background playback</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlertSettingsPage.qml" line="231"/>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="448"/>
         <source>Athan playback runs via a periodic system timer (every minute, using WakeSystem to wake the device from suspend) that checks these settings directly - it doesn&apos;t need this app&apos;s window to stay open. It needs a one-time enable step after installing; see the project README.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="241"/>
+        <source>Morning and evening Athkar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="249"/>
+        <source>Listen to Athkar audio clips before Chourouq and Maghreb.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="258"/>
+        <source>Listening to morning Athkar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AlertSettingsPage.qml" line="288"/>
+        <source>Before Chourouq by %1 min</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AppearancePage</name>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="22"/>
+        <source>Appearance &amp; Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="26"/>
+        <source>Islamic Vector (SVG) &amp; Art Backgrounds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="38"/>
+        <source>Mosque Sunset &amp; Minaret (SVG)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="39"/>
+        <source>Warm golden sunset with minaret, dome silhouette &amp; glowing sun</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="45"/>
+        <source>Mosque Sunset (Photo HD)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="46"/>
+        <source>Atmospheric photograph of sunset behind minaret &amp; dome</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="52"/>
+        <source>Prophet&apos;s Mosque Minarets (Photo HD)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="53"/>
+        <source>Majestic illuminated minarets &amp; domes of Al-Masjid an-Nabawi</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="59"/>
+        <source>Golden Dome &amp; Palm (Photo HD)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="60"/>
+        <source>Gleaming golden mosque dome and palm tree against blue sky</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="66"/>
+        <source>Ottoman Mosque &amp; Minarets (Photo HD)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="67"/>
+        <source>Historic Ottoman style mosque with slender minarets &amp; domes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="73"/>
+        <source>Twilight Mosque &amp; Palms (Photo HD)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="74"/>
+        <source>Vibrant purple and pink twilight sky with mosque and palms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="80"/>
+        <source>Glowing Night Mosque (Photo HD)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="81"/>
+        <source>Warm luminous night mosque with radiant crescent and domes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="87"/>
+        <source>8-Star Girih Lattice (SVG)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="88"/>
+        <source>Authentic 8-pointed star Islamic girih vector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="94"/>
+        <source>Mihrab Arch &amp; Lantern (SVG)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="95"/>
+        <source>Mosque mihrab arch with glowing hanging lantern</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="101"/>
+        <source>Andalusian 12-Star Rosette (SVG)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="102"/>
+        <source>Alhambra Moorish 12-pointed star rosettes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="108"/>
+        <source>Crescent Moon &amp; Mosque (SVG)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="109"/>
+        <source>Mosque skyline, domes and crescent moon with celestial lattice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="115"/>
+        <source>Midnight Teal Girih (Art)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="116"/>
+        <source>Atmospheric midnight teal with gold filigree</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="122"/>
+        <source>Royal Mihrab Arch (Art)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="123"/>
+        <source>Antique gold Damascus floral arabesque arch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="129"/>
+        <source>Arabesque Tessellation (Art)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="130"/>
+        <source>Clean geometric star polygons on ocean blue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="136"/>
+        <source>Harmonious Home Islamic Art (SVG)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="137"/>
+        <source>Custom vector tailored to home layout: top Moorish arch with lantern, framing side minarets, subtle central girih, and bottom mosque dome</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="143"/>
+        <source>Mosque Carpet Emerald (SVG)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="144"/>
+        <source>Vector inspired by mosque prayer carpet: ivory cartouche row bands, ruby-centered floral medallions, and layout-aligned borders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="150"/>
+        <source>Great Mosque of Algiers (Photo HD)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="151"/>
+        <source>Djamaa el Djazaïr with its iconic soaring minaret and grand dome overlooking the Bay of Algiers (Default for Algeria)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="157"/>
+        <source>None (Default Ambiance)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="158"/>
+        <source>Use standard Sailfish OS system ambiance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="310"/>
+        <source>Tip: An opacity between 25% and 45% delivers a crisp luxury look while keeping all prayer texts perfectly readable.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="285"/>
+        <source>Background Opacity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AppearancePage.qml" line="290"/>
+        <source>Opacity</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AthanNotification</name>
     <message>
-        <location filename="../src/athannotification.h" line="67"/>
+        <location filename="../src/athannotification.h" line="103"/>
         <source>Fajr</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/athannotification.h" line="68"/>
+        <location filename="../src/athannotification.h" line="104"/>
         <source>Chourouq</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/athannotification.h" line="69"/>
+        <location filename="../src/athannotification.h" line="105"/>
         <source>Dhouhr</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/athannotification.h" line="69"/>
+        <location filename="../src/athannotification.h" line="105"/>
         <source>Friday prayer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/athannotification.h" line="70"/>
+        <location filename="../src/athannotification.h" line="106"/>
         <source>Assar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/athannotification.h" line="71"/>
+        <location filename="../src/athannotification.h" line="107"/>
         <source>Maghreb</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/athannotification.h" line="72"/>
+        <location filename="../src/athannotification.h" line="108"/>
         <source>Ishaa</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/athannotification.h" line="73"/>
+        <location filename="../src/athannotification.h" line="111"/>
         <source>Athan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/athannotification.h" line="77"/>
+        <location filename="../src/athannotification.h" line="116"/>
         <source>Sunrise (Chourouq)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/athannotification.h" line="78"/>
+        <location filename="../src/athannotification.h" line="117"/>
         <source>%1 Prayer Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/athannotification.h" line="78"/>
+        <location filename="../src/athannotification.h" line="117"/>
         <source>Friday Prayer Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/athannotification.h" line="80"/>
+        <location filename="../src/athannotification.h" line="119"/>
         <source>Sunrise time has entered.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/athannotification.h" line="81"/>
+        <location filename="../src/athannotification.h" line="120"/>
         <source>Athan is playing. Tap Stop to silence.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/athannotification.h" line="84"/>
-        <location filename="../src/athannotification.h" line="85"/>
+        <location filename="../src/athannotification.h" line="110"/>
+        <source>Evening Athkar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/athannotification.h" line="120"/>
+        <source>Athkar is playing. Tap Stop to silence.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/athannotification.h" line="123"/>
+        <location filename="../src/athannotification.h" line="124"/>
         <source>Stop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/athannotification.h" line="109"/>
+        <source>Morning Athkar</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Athkar</name>
+    <message>
+        <location filename="../qml/pages/Athkar.qml" line="217"/>
+        <source>Listening to some Athkar: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Athkar.qml" line="248"/>
+        <source>Clip %1 of %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Athkar.qml" line="266"/>
+        <source>Athkar: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Athkar.qml" line="267"/>
+        <source>Click to select a dhikr</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Athkar.qml" line="270"/>
+        <source>Doaa for Travel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Athkar.qml" line="271"/>
+        <source>Doaa Istikhara</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Athkar.qml" line="272"/>
+        <source>Doaa Istighfar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Athkar.qml" line="273"/>
+        <source>Doaa Istiaatha</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Athkar.qml" line="274"/>
+        <source>Doaa Istiftah</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Athkar.qml" line="275"/>
+        <source>Doaa Affiya</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Athkar.qml" line="276"/>
+        <source>Doaa leave the house</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Athkar.qml" line="277"/>
+        <source>Doaa go to the mosque</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Athkar.qml" line="278"/>
+        <source>Morning Athkar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Athkar.qml" line="279"/>
+        <source>Evening Athkar</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -400,42 +791,7 @@
 <context>
     <name>CoverPage</name>
     <message>
-        <location filename="../qml/cover/CoverPage.qml" line="17"/>
-        <source>Fajr</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/cover/CoverPage.qml" line="18"/>
-        <source>Chourouq</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/cover/CoverPage.qml" line="19"/>
-        <source>Dhouhr</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/cover/CoverPage.qml" line="13"/>
-        <source>Friday prayer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/cover/CoverPage.qml" line="20"/>
-        <source>Assar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/cover/CoverPage.qml" line="21"/>
-        <source>Maghreb</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/cover/CoverPage.qml" line="22"/>
-        <source>Ishaa</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/cover/CoverPage.qml" line="32"/>
+        <location filename="../qml/cover/CoverPage.qml" line="72"/>
         <source>Athan</source>
         <translation type="unfinished"></translation>
     </message>
@@ -499,286 +855,418 @@
     </message>
 </context>
 <context>
+    <name>IslamicEventPage</name>
+    <message>
+        <location filename="../qml/pages/IslamicEventPage.qml" line="26"/>
+        <source>Today&apos;s Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>IslamicEvents</name>
+    <message>
+        <location filename="../src/islamicevents.cpp" line="190"/>
+        <source>ToDay&apos;s Event: Islamic New Year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/islamicevents.cpp" line="197"/>
+        <source>After tomorrow&apos;s Event: Aashura, it is recommended to fast and the day before</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/islamicevents.cpp" line="204"/>
+        <source>Tomorrow&apos;s Event: Aashura, it is recommended to fast</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/islamicevents.cpp" line="211"/>
+        <source>ToDay&apos;s Event: Aashura, it is recommended to fast</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/islamicevents.cpp" line="222"/>
+        <source>ToDay&apos;s Event: Birth of the Prophet (Sala ELLAH alihi wasalam)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/islamicevents.cpp" line="229"/>
+        <source>ToDay&apos;s Event: Liberation of Bait AL-Maqdis by Omar Ibn Al-Khattab (15 A.H)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/islamicevents.cpp" line="240"/>
+        <source>ToDay&apos;s Event: Battle of Hitteen (583 A.H)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/islamicevents.cpp" line="251"/>
+        <source>ToDay&apos;s Event: Battle of Muatah (8 A.H)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/islamicevents.cpp" line="262"/>
+        <source>ToDay&apos;s Event: Salahuddin liberates Bait Al-Maqdis from crusaders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/islamicevents.cpp" line="273"/>
+        <source>ToDay&apos;s Event: Battle of Qadisiah (14 A.H)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/islamicevents.cpp" line="284"/>
+        <source>ToDay&apos;s Event: First day of month-long Fasting (Ramathan)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/islamicevents.cpp" line="291"/>
+        <source>ToDay&apos;s Event: Battle of Badr (2 A.H)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/islamicevents.cpp" line="298"/>
+        <source>ToDay&apos;s Event: beginning of the last ten days of Ramathan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/islamicevents.cpp" line="305"/>
+        <source>ToDay&apos;s Event: Liberation of Makkah (8 A.H)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/islamicevents.cpp" line="316"/>
+        <source>ToDay&apos;s Event: Eid Al-Fitr</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/islamicevents.cpp" line="323"/>
+        <source>ToDay&apos;s Event: Battle of Uhud (3 A.H)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/islamicevents.cpp" line="330"/>
+        <source>ToDay&apos;s Event: Battle of Hunian (8 A.H)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/islamicevents.cpp" line="341"/>
+        <source>ToDay&apos;s Event: Hajj to Makkah - day #1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/islamicevents.cpp" line="348"/>
+        <source>ToDay&apos;s Event: Day of Arafah, it is recommended to fast for non-pilgrims</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/islamicevents.cpp" line="355"/>
+        <source>ToDay&apos;s Event: Hajj to Makkah - day #3 and Eid Al-Adhaa</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>LocationSettingsPage</name>
     <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="29"/>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="30"/>
         <source>Location Settings</source>
         <translation type="unfinished">Location Settings</translation>
     </message>
     <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="31"/>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="34"/>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="32"/>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="35"/>
         <source>Location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="35"/>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="36"/>
         <source>Find a city</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="43"/>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="44"/>
         <source>Change city</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="48"/>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="49"/>
         <source>Pick on map instead</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="53"/>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="57"/>
-        <source>Calculation method</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="61"/>
-        <source>Muslim World League</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="62"/>
-        <source>Islamic Society of North America</source>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="54"/>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="58"/>
+        <source>Daylight saving time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/LocationSettingsPage.qml" line="63"/>
-        <source>Egyptian General Authority</source>
+        <source>Automatic (by country &amp; city)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/LocationSettingsPage.qml" line="64"/>
-        <source>Umm al-Qura, Makkah</source>
+        <source>Disabled (Standard time)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/LocationSettingsPage.qml" line="65"/>
-        <source>University of Islamic Sciences, Karachi</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="66"/>
-        <source>Institute of Geophysics, Tehran</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="67"/>
-        <source>Prayer Times for High Latitudes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="68"/>
-        <source>Ministry of Habous and Islamic Affairs, Morocco</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="69"/>
-        <source>Fixed Isha Angle Interval</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="70"/>
-        <source>Egyptian General Authority of Survey NEW</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="71"/>
-        <source>Umm Al-Qura University, RAMADAN</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="72"/>
-        <source>MOONSIGHTING_COMMITTEE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="73"/>
-        <source>FRANCE_UOIF</source>
+        <source>Enabled (+1 hour)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/LocationSettingsPage.qml" line="74"/>
-        <source>MALAYSIA_JAKIM</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="75"/>
-        <source>TURKEY_FAZILET</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="76"/>
-        <source>TURKEY_TPRA</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="77"/>
-        <source>TURKEY_DIYANET</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../qml/pages/LocationSettingsPage.qml" line="78"/>
-        <source>ENGLAND_BIRMINGHAM</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="79"/>
-        <source>JORDAN_MAIAHPJ</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="80"/>
-        <source>ALGERIA_MARWDZ</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="81"/>
-        <source>TUNISIA_MAIAMTU</source>
+        <source>Calculation method</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/LocationSettingsPage.qml" line="82"/>
-        <source>OMAN_MARAOM</source>
+        <source>Muslim World League</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/LocationSettingsPage.qml" line="83"/>
-        <source>KUWAIT_MARAKU</source>
+        <source>Islamic Society of North America</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/LocationSettingsPage.qml" line="84"/>
-        <source>LIBYA_MARALI</source>
+        <source>Egyptian General Authority</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/LocationSettingsPage.qml" line="85"/>
-        <source>QATAR_TAQWMQAT</source>
+        <source>Umm al-Qura, Makkah</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="86"/>
+        <source>University of Islamic Sciences, Karachi</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="87"/>
+        <source>Institute of Geophysics, Tehran</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="88"/>
+        <source>Prayer Times for High Latitudes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="89"/>
+        <source>Ministry of Habous and Islamic Affairs, Morocco</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="90"/>
+        <source>Fixed Isha Angle Interval</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="91"/>
+        <source>Egyptian General Authority of Survey NEW</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/LocationSettingsPage.qml" line="92"/>
-        <source>High latitude rule</source>
+        <source>Umm Al-Qura University, RAMADAN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/LocationSettingsPage.qml" line="93"/>
-        <source>Rule used to adjust Fajr and Isha at high latitudes when twilight persists through the night.</source>
+        <source>MOONSIGHTING_COMMITTEE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="94"/>
+        <source>FRANCE_UOIF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="95"/>
+        <source>MALAYSIA_JAKIM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="96"/>
+        <source>TURKEY_FAZILET</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="97"/>
+        <source>TURKEY_TPRA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/LocationSettingsPage.qml" line="98"/>
-        <source>None</source>
+        <source>TURKEY_DIYANET</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/LocationSettingsPage.qml" line="99"/>
-        <source>Angle-based / Proportional (Recommended)</source>
+        <source>ENGLAND_BIRMINGHAM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/LocationSettingsPage.qml" line="100"/>
-        <source>Middle of the night (1/2)</source>
+        <source>JORDAN_MAIAHPJ</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/LocationSettingsPage.qml" line="101"/>
-        <source>One-seventh of the night (1/7)</source>
+        <source>ALGERIA_MARWDZ</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="108"/>
-        <source>Asr calculation (madhab)</source>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="102"/>
+        <source>TUNISIA_MAIAMTU</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="112"/>
-        <source>Shafi’i / Maliki / Hanbali</source>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="103"/>
+        <source>OMAN_MARAOM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="104"/>
+        <source>KUWAIT_MARAKU</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="105"/>
+        <source>LIBYA_MARALI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="106"/>
+        <source>QATAR_TAQWMQAT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/LocationSettingsPage.qml" line="113"/>
-        <source>Hanafi</source>
+        <source>High latitude rule</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="118"/>
-        <source>General</source>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="114"/>
+        <source>Rule used to adjust Fajr and Isha at high latitudes when twilight persists through the night.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="119"/>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="120"/>
+        <source>Angle-based / Proportional (Recommended)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="121"/>
+        <source>Middle of the night (1/2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/LocationSettingsPage.qml" line="122"/>
+        <source>One-seventh of the night (1/7)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="129"/>
+        <source>Asr calculation (madhab)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="133"/>
+        <source>Shafi’i / Maliki / Hanbali</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="134"/>
+        <source>Hanafi</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="139"/>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="143"/>
         <source>Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="123"/>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="144"/>
         <source>Choose the application language, or follow the device system language.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="137"/>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="158"/>
         <source>Follow system</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="157"/>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="178"/>
         <source>Number format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="158"/>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="179"/>
         <source>Choose between Arabic numerals (0, 1, 2...) and Hindi numerals (٠، ١، ٢...).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="163"/>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="184"/>
         <source>Arabic numerals (0, 1, 2...)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="164"/>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="185"/>
         <source>Hindi numerals (٠، ١، ٢...)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="178"/>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="199"/>
         <source>Home page layout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="182"/>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="203"/>
         <source>All-in-One 3-Column</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="183"/>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="204"/>
         <source>Classic 3-Column</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="184"/>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="205"/>
         <source>2-Column Grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="185"/>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="206"/>
         <source>Hero &amp; List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="194"/>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="215"/>
         <source>Compass calibration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="202"/>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="223"/>
         <source>Fine-tune the compass heading offset (±30°) to correct for local magnetic declination or device sensor bias.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/LocationSettingsPage.qml" line="211"/>
+        <location filename="../qml/pages/LocationSettingsPage.qml" line="232"/>
         <source>Heading offset</source>
         <translation type="unfinished"></translation>
     </message>
@@ -786,338 +1274,474 @@
 <context>
     <name>MainPage</name>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="125"/>
-        <location filename="../qml/pages/MainPage.qml" line="129"/>
+        <location filename="../qml/pages/MainPage.qml" line="139"/>
+        <location filename="../qml/pages/MainPage.qml" line="143"/>
         <source>All-in-One 3-Column</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="126"/>
+        <location filename="../qml/pages/MainPage.qml" line="140"/>
         <source>Classic 3-Column</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="127"/>
+        <location filename="../qml/pages/MainPage.qml" line="141"/>
         <source>2-Column Grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="128"/>
+        <location filename="../qml/pages/MainPage.qml" line="142"/>
         <source>Hero &amp; List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="174"/>
+        <location filename="../qml/pages/MainPage.qml" line="158"/>
+        <source>8-Star Girih (SVG)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="159"/>
+        <source>Mihrab &amp; Lantern (SVG)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="160"/>
+        <source>Andalusian 12 (SVG)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="161"/>
+        <source>Crescent &amp; Mosque (SVG)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="162"/>
+        <source>Midnight Teal (Art)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="163"/>
+        <source>Royal Arch (Art)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="164"/>
+        <source>Arabesque (Art)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="215"/>
         <source>Fajr</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="175"/>
+        <location filename="../qml/pages/MainPage.qml" line="216"/>
         <source>Chourouq</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="176"/>
+        <location filename="../qml/pages/MainPage.qml" line="217"/>
         <source>Dhouhr</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="170"/>
+        <location filename="../qml/pages/MainPage.qml" line="210"/>
         <source>Friday prayer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="177"/>
+        <location filename="../qml/pages/MainPage.qml" line="150"/>
+        <location filename="../qml/pages/MainPage.qml" line="168"/>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="151"/>
+        <source>Mosque Sunset (SVG)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="152"/>
+        <source>Mosque Sunset (Photo)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="153"/>
+        <source>Prophet&apos;s Mosque</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="154"/>
+        <source>Golden Dome &amp; Palm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="155"/>
+        <source>Ottoman Mosque</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="156"/>
+        <source>Twilight Mosque</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="157"/>
+        <source>Glowing Mosque</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="165"/>
+        <source>Harmonious Islamic Art (SVG)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="166"/>
+        <source>Mosque Carpet (SVG)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="167"/>
+        <source>Great Mosque of Algiers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="214"/>
+        <source>Imsak</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="218"/>
         <source>Assar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="178"/>
+        <location filename="../qml/pages/MainPage.qml" line="219"/>
         <source>Maghreb</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="179"/>
+        <location filename="../qml/pages/MainPage.qml" line="220"/>
         <source>Ishaa</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="180"/>
-        <location filename="../qml/pages/MainPage.qml" line="461"/>
-        <location filename="../qml/pages/MainPage.qml" line="573"/>
+        <location filename="../qml/pages/MainPage.qml" line="221"/>
+        <location filename="../qml/pages/MainPage.qml" line="594"/>
+        <location filename="../qml/pages/MainPage.qml" line="708"/>
         <source>Midnight</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="181"/>
-        <location filename="../qml/pages/MainPage.qml" line="461"/>
-        <location filename="../qml/pages/MainPage.qml" line="573"/>
+        <location filename="../qml/pages/MainPage.qml" line="222"/>
+        <location filename="../qml/pages/MainPage.qml" line="594"/>
+        <location filename="../qml/pages/MainPage.qml" line="708"/>
         <source>Last 1/3 Night Begins</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="210"/>
+        <location filename="../qml/pages/MainPage.qml" line="251"/>
         <source>%1h %2m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="212"/>
+        <location filename="../qml/pages/MainPage.qml" line="253"/>
         <source>%1m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="243"/>
+        <location filename="../qml/pages/MainPage.qml" line="321"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="247"/>
+        <location filename="../qml/pages/MainPage.qml" line="327"/>
+        <source>Background: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="333"/>
         <source>Layout: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="253"/>
+        <location filename="../qml/pages/MainPage.qml" line="339"/>
         <source>Qibla direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="258"/>
+        <location filename="../qml/pages/MainPage.qml" line="344"/>
+        <source>Holy Quran</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="348"/>
         <source>Favorites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="262"/>
+        <location filename="../qml/pages/MainPage.qml" line="352"/>
         <source>Change city</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="266"/>
+        <location filename="../qml/pages/MainPage.qml" line="356"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="289"/>
+        <location filename="../qml/pages/MainPage.qml" line="379"/>
         <source>Prayer Times for: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="289"/>
+        <location filename="../qml/pages/MainPage.qml" line="379"/>
         <source>Prayer Times</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="317"/>
+        <location filename="../qml/pages/MainPage.qml" line="407"/>
         <source>No city selected yet. Pull down and choose “Change city” to search any city in the world.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="647"/>
-        <location filename="../qml/pages/MainPage.qml" line="727"/>
+        <location filename="../qml/pages/MainPage.qml" line="439"/>
+        <source>🌙 Imsak (Stop Eating):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="783"/>
+        <location filename="../qml/pages/MainPage.qml" line="864"/>
         <source>Last 1/3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="657"/>
-        <location filename="../qml/pages/MainPage.qml" line="737"/>
+        <location filename="../qml/pages/MainPage.qml" line="793"/>
+        <location filename="../qml/pages/MainPage.qml" line="874"/>
         <source>Night Begins</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="813"/>
+        <location filename="../qml/pages/MainPage.qml" line="950"/>
         <source>UPCOMING: TOMORROW&apos;S FAJR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="814"/>
+        <location filename="../qml/pages/MainPage.qml" line="951"/>
         <source>UPCOMING: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="815"/>
+        <location filename="../qml/pages/MainPage.qml" line="952"/>
         <source>Tomorrow&apos;s %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="832"/>
+        <location filename="../qml/pages/MainPage.qml" line="969"/>
         <source>Remaining: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="972"/>
+        <location filename="../qml/pages/MainPage.qml" line="1115"/>
         <source>Remaining time until: Tomorrow&apos;s Fajr</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="974"/>
+        <location filename="../qml/pages/MainPage.qml" line="1117"/>
         <source>Remaining time until: Tomorrow&apos;s %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="975"/>
+        <location filename="../qml/pages/MainPage.qml" line="1118"/>
         <source>Remaining time until: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="1264"/>
+        <source>Tap to read details...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>PrayerManager</name>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1093"/>
+        <location filename="../src/prayermanager.cpp" line="963"/>
+        <source>Auto: Daylight saving (+1h) active for %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/prayermanager.cpp" line="967"/>
+        <source>Auto: Standard time (no daylight saving) for %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/prayermanager.cpp" line="972"/>
+        <source>Disabled manually (Standard time)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/prayermanager.cpp" line="976"/>
+        <source>Enabled manually (+1 hour)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/prayermanager.cpp" line="1579"/>
         <source>Muslim World League</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1094"/>
+        <location filename="../src/prayermanager.cpp" line="1580"/>
         <source>Islamic Society of North America</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1095"/>
+        <location filename="../src/prayermanager.cpp" line="1581"/>
         <source>Egyptian General Authority</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1096"/>
+        <location filename="../src/prayermanager.cpp" line="1582"/>
         <source>Umm al-Qura, Makkah</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1097"/>
+        <location filename="../src/prayermanager.cpp" line="1583"/>
         <source>University of Islamic Sciences, Karachi</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1098"/>
+        <location filename="../src/prayermanager.cpp" line="1584"/>
         <source>Institute of Geophysics, Tehran</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1099"/>
+        <location filename="../src/prayermanager.cpp" line="1585"/>
         <source>Prayer Times for High Latitudes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1100"/>
+        <location filename="../src/prayermanager.cpp" line="1586"/>
         <source>Ministry of Habous and Islamic Affairs, Morocco</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1101"/>
+        <location filename="../src/prayermanager.cpp" line="1587"/>
         <source>Fixed Isha Angle Interval</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1102"/>
+        <location filename="../src/prayermanager.cpp" line="1588"/>
         <source>Egyptian General Authority of Survey NEW</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1103"/>
+        <location filename="../src/prayermanager.cpp" line="1589"/>
         <source>Umm Al-Qura University, RAMADAN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1104"/>
+        <location filename="../src/prayermanager.cpp" line="1590"/>
         <source>MOONSIGHTING_COMMITTEE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1105"/>
+        <location filename="../src/prayermanager.cpp" line="1591"/>
         <source>FRANCE_UOIF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1106"/>
+        <location filename="../src/prayermanager.cpp" line="1592"/>
         <source>MALAYSIA_JAKIM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1107"/>
+        <location filename="../src/prayermanager.cpp" line="1593"/>
         <source>TURKEY_FAZILET</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1108"/>
+        <location filename="../src/prayermanager.cpp" line="1594"/>
         <source>TURKEY_TPRA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1109"/>
+        <location filename="../src/prayermanager.cpp" line="1595"/>
         <source>TURKEY_DIYANET</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1110"/>
+        <location filename="../src/prayermanager.cpp" line="1596"/>
         <source>ENGLAND_BIRMINGHAM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1111"/>
+        <location filename="../src/prayermanager.cpp" line="1597"/>
         <source>JORDAN_MAIAHPJ</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1112"/>
+        <location filename="../src/prayermanager.cpp" line="1598"/>
         <source>ALGERIA_MARWDZ</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1113"/>
+        <location filename="../src/prayermanager.cpp" line="1599"/>
         <source>TUNISIA_MAIAMTU</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1114"/>
+        <location filename="../src/prayermanager.cpp" line="1600"/>
         <source>OMAN_MARAOM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1115"/>
+        <location filename="../src/prayermanager.cpp" line="1601"/>
         <source>KUWAIT_MARAKU</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1116"/>
+        <location filename="../src/prayermanager.cpp" line="1602"/>
         <source>LIBYA_MARALI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1117"/>
+        <location filename="../src/prayermanager.cpp" line="1603"/>
         <source>QATAR_TAQWMQAT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1118"/>
+        <location filename="../src/prayermanager.cpp" line="1604"/>
         <source>Standard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1124"/>
+        <location filename="../src/prayermanager.cpp" line="1610"/>
         <source>Hanafi</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1124"/>
+        <location filename="../src/prayermanager.cpp" line="1610"/>
         <source>Shafi’i / Maliki / Hanbali</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1130"/>
+        <location filename="../src/prayermanager.cpp" line="1616"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1131"/>
-        <location filename="../src/prayermanager.cpp" line="1134"/>
+        <location filename="../src/prayermanager.cpp" line="1617"/>
+        <location filename="../src/prayermanager.cpp" line="1620"/>
         <source>Angle-based / Proportional (Recommended)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1132"/>
+        <location filename="../src/prayermanager.cpp" line="1618"/>
         <source>Middle of the night (1/2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/prayermanager.cpp" line="1133"/>
+        <location filename="../src/prayermanager.cpp" line="1619"/>
         <source>One-seventh of the night (1/7)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1235,7 +1859,7 @@
     </message>
     <message>
         <location filename="../qml/pages/QiblaPage.qml" line="222"/>
-        <location filename="../qml/pages/QiblaPage.qml" line="1118"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1140"/>
         <source>Determination Method</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1280,195 +1904,1228 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="723"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="734"/>
         <source>Facing Qibla!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="723"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="734"/>
         <source>Turn device towards green marker</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="723"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="734"/>
         <source>Sensor initializing...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="726"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="737"/>
         <source>Fixed Dial — True North at top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="728"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="739"/>
         <source>Aim top at %1 → Kaaba needle is Qibla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="776"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="798"/>
         <source>Qibla %1°</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="855"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="877"/>
         <source>Moon %1° (%2%)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="899"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="921"/>
         <source>Sun %1°</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="937"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="959"/>
         <source>Shadow %1°</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="978"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1000"/>
         <source>Celestial Navigation (No Magnetic Jitter)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="993"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1015"/>
         <source>True North is fixed at the top of the phone. Compass sensors are off to eliminate magnetic distortion.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="996"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1018"/>
         <source>right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="996"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1018"/>
         <source>left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="997"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1019"/>
         <source>1. Point the top of your phone towards the %1.
 2. The green Kaaba needle points to Qibla (%2° to the %3).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="1007"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1029"/>
         <source>Completely immune to indoor iron, steel, and electronic magnetic interference.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="1047"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1069"/>
         <source>Compass Accuracy: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="1079"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1101"/>
         <source>Rotate and wave your device in a figure-8 motion (∞) away from magnetic objects to calibrate the compass sensor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="1087"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1109"/>
         <source>Sensor Calibration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="1097"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1119"/>
         <source>Calibration Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="1106"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1128"/>
         <source>Sensor Calibration Level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="1113"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1135"/>
         <source>Qibla Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="1119"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1141"/>
         <source>Magnetic Compass</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="1119"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1141"/>
         <source>Sun / Moon / Celestial</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="1124"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1146"/>
         <source>Qibla Bearing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="1130"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1152"/>
         <source>Distance to Kaaba</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="1136"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1158"/>
         <source>Current Device Heading</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="1142"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1164"/>
         <source>Kaaba Coordinates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="1148"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1170"/>
         <source>City Coordinates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="1155"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1177"/>
         <source>Celestial Bearings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="1160"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1182"/>
         <source>Sun Direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="1161"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1183"/>
         <source>Day, Alt: %1°</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="1161"/>
-        <location filename="../qml/pages/QiblaPage.qml" line="1173"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1183"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1195"/>
         <source>Below horizon (%1°)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="1166"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1188"/>
         <source>Sun Shadow Direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="1167"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1189"/>
         <source>Gnomon shadow (opposite Sun)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="1172"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1194"/>
         <source>Moon Direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="1173"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1195"/>
         <source>Visible, Alt: %1°</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="1178"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1200"/>
         <source>Moon Phase</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/QiblaPage.qml" line="1179"/>
+        <location filename="../qml/pages/QiblaPage.qml" line="1201"/>
         <source>lit</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QuranDownloadPage</name>
+    <message>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="59"/>
+        <source>Refresh Stats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="71"/>
+        <source>Downloads &amp; Offline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="72"/>
+        <source>Download Quran and recitations for offline use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="108"/>
+        <source>Internet connection is disabled. All download buttons are disabled until connection is restored.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="135"/>
+        <source>• You can stream online on-demand (pages and played recitations are cached automatically).
+• Or you can download full Quran pages and recitations here for 100% offline use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="143"/>
+        <source>Holy Quran Riwayah</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="148"/>
+        <source>Current Riwayah:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="166"/>
+        <source>Quran Pages (Mushaf View)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="188"/>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="317"/>
+        <source>Status:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="204"/>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="333"/>
+        <source>(Internet disabled)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="222"/>
+        <source>Downloading Quran pages...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="227"/>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="356"/>
+        <source>Stop Download</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="242"/>
+        <source>Verify &amp; Update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="242"/>
+        <source>Download All Pages (604)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="250"/>
+        <source>Clear Pages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="253"/>
+        <source>Deleting cached pages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="269"/>
+        <source>Audio Recitation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="275"/>
+        <source>Reciter:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="365"/>
+        <source>Download Full Quran Audio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="377"/>
+        <source>Or download specific Surah:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="389"/>
+        <source>Surah:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="406"/>
+        <source>Download</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="417"/>
+        <source>Clear Cached Audio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranDownloadPage.qml" line="420"/>
+        <source>Deleting cached audio</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QuranIndexPage</name>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="70"/>
+        <source>Downloads &amp; Offline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="75"/>
+        <source>Continue Reading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="87"/>
+        <source>Tafsir &amp; Translation (Last Position)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="99"/>
+        <source>Riwayah: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="109"/>
+        <source>View: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="109"/>
+        <source>Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="109"/>
+        <source>Mushaf Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="117"/>
+        <source>Light Reading Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="118"/>
+        <source>Dark Reading Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="136"/>
+        <source>Reciter: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="155"/>
+        <source>Listening Statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="175"/>
+        <source>Holy Quran</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="224"/>
+        <source>Resume Last Read</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="267"/>
+        <source>Partial match / substring...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="268"/>
+        <source>Enter Arabic root (e.g. كتب, رحم)...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="269"/>
+        <source>Search phrase or multiple words...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="270"/>
+        <source>Search in translation text...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="271"/>
+        <source>Search Quran verses...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="320"/>
+        <source>Search Options &amp; Scope</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="332"/>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="454"/>
+        <source>Partial Match</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="333"/>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="480"/>
+        <source>Arabic Root</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="334"/>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="506"/>
+        <source>Phrase Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="335"/>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="532"/>
+        <source>Translation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="338"/>
+        <source>All Quran</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="377"/>
+        <source>Search Mode:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="265"/>
+        <source>Word &amp; affixes search (e.g. Rabb, Kitaab)...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="126"/>
+        <source>Disable Colored Tajweed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="127"/>
+        <source>Enable Colored Tajweed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="161"/>
+        <source>Clear All Bookmarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="163"/>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="1348"/>
+        <source>Deleting all bookmarks...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="266"/>
+        <source>Exact literal search...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="330"/>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="402"/>
+        <source>Word &amp; Affixes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="331"/>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="428"/>
+        <source>Exact Literal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="549"/>
+        <source>• Find word with its Qur&apos;anic affixes (al-, wa-, bi-, pronouns like Rabb, Rabbana, wa-Rabbuka) matching frequency statistics.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="550"/>
+        <source>• Exact verbatim match without attached affixes or pronouns.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="551"/>
+        <source>• Search for letters or partial words to find all matching variations.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="552"/>
+        <source>• Look up words based on their 3-letter or 4-letter Arabic roots.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="553"/>
+        <source>• Search for a sequence of multiple words together.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="554"/>
+        <source>• Type words in English, French, or other languages to search within translated text.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="566"/>
+        <source>Search In:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="570"/>
+        <source>All Languages &amp; Editions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="646"/>
+        <source>Respect Tashkeel / Diacritics (Exact Vowels)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="657"/>
+        <source>• Active: Only verses matching exact vowels, sukoon, shaddah, and tanween will match.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="658"/>
+        <source>• Off: Diacritics are ignored during search.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="674"/>
+        <source>Search Scope:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="698"/>
+        <source>All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="723"/>
+        <source>Surah</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="748"/>
+        <source>Juz</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="773"/>
+        <source>Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="790"/>
+        <source>Select Surah:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="807"/>
+        <source>Select Juz:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="824"/>
+        <source>Select Page:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="847"/>
+        <source>Surahs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="854"/>
+        <source>Juz / Hizb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="861"/>
+        <source>Bookmarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="877"/>
+        <source>Search Results (%1 verses)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="924"/>
+        <source>Search Statistics &amp; Chart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="934"/>
+        <source>View occurrences, tables and percentage charts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="971"/>
+        <source>No matching verses found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="980"/>
+        <source>Try Word &amp; Affixes to match prefixes and pronouns</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="981"/>
+        <source>Ensure entering 3 or 4 root letters (e.g. كتب, رحم)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="982"/>
+        <source>Check spelling or change search scope to All Quran</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="1184"/>
+        <source>Meccan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="1184"/>
+        <source>Medinan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="1198"/>
+        <source>%1 verses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="1234"/>
+        <source>Juz&apos; (30 Parts)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="1330"/>
+        <source>Saved Bookmarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="1346"/>
+        <source>Clear All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="1361"/>
+        <source>No bookmarks saved yet.
+Long press any ayah in the reader to bookmark it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranIndexPage.qml" line="1378"/>
+        <source>Remove Bookmark</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QuranListeningStatsPage</name>
+    <message>
+        <location filename="../qml/pages/QuranListeningStatsPage.qml" line="63"/>
+        <source>Clear Listening History</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranListeningStatsPage.qml" line="66"/>
+        <location filename="../qml/pages/QuranListeningStatsPage.qml" line="377"/>
+        <source>Clearing listening history...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranListeningStatsPage.qml" line="74"/>
+        <source>Refresh Statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranListeningStatsPage.qml" line="85"/>
+        <source>Quran Listening Stats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranListeningStatsPage.qml" line="118"/>
+        <source>Today&apos;s Ayahs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranListeningStatsPage.qml" line="125"/>
+        <source>Non-repeated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranListeningStatsPage.qml" line="155"/>
+        <source>Total Unique</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranListeningStatsPage.qml" line="162"/>
+        <source>Unique Ayahs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranListeningStatsPage.qml" line="192"/>
+        <source>Active Days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranListeningStatsPage.qml" line="199"/>
+        <source>Days recorded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranListeningStatsPage.qml" line="208"/>
+        <source>Daily Listening Table (Non-repeated)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranListeningStatsPage.qml" line="228"/>
+        <source>Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranListeningStatsPage.qml" line="238"/>
+        <source>Day</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranListeningStatsPage.qml" line="248"/>
+        <source>Ayahs Listened</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranListeningStatsPage.qml" line="362"/>
+        <source>No listening history recorded yet.
+Every unique ayah you listen to is recorded automatically each day and stored in settings.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranListeningStatsPage.qml" line="375"/>
+        <source>Clear History</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QuranReaderPage</name>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="180"/>
+        <source>Ayah copied to clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="187"/>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="844"/>
+        <source>Share Ayah</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="733"/>
+        <source>⚠️ Internet connection required to download page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="738"/>
+        <source>🌐 Internet connection required to stream (ayah not cached)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="743"/>
+        <source>⚠️ Playback failed. Please check internet connection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="746"/>
+        <source>⚠️ Ayah audio playback error.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="804"/>
+        <source>Fullscreen View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="809"/>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="2233"/>
+        <source>Tafsir &amp; Translation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="881"/>
+        <source>Downloads &amp; Offline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="888"/>
+        <source>Listening Statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="894"/>
+        <source>Light Reading Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="895"/>
+        <source>Dark Reading Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="903"/>
+        <source>Disable Colored Tajweed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="904"/>
+        <source>Enable Colored Tajweed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="913"/>
+        <source>Switch to: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="913"/>
+        <source>Mushaf Page View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="913"/>
+        <source>Text View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="922"/>
+        <source>Riwayah: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="931"/>
+        <source>Reciter: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="950"/>
+        <source>Stop Recitation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="951"/>
+        <source>Play Surah Audio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="964"/>
+        <source>Next Surah</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="976"/>
+        <source>Previous Surah</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="1000"/>
+        <source>Meccan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="1000"/>
+        <source>Medinan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="1035"/>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="2260"/>
+        <source>Mushaf Pages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="1058"/>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="2261"/>
+        <source>Text Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="1081"/>
+        <source>Font size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="1113"/>
+        <source>✓ Colored Tajweed (Active)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="1114"/>
+        <source>Colored Tajweed Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="1153"/>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="2027"/>
+        <source>Tajweed Rules Guide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="1163"/>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="2037"/>
+        <source>▲ Hide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="1163"/>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="2037"/>
+        <source>▼ Details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="2215"/>
+        <source>Pause</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="2316"/>
+        <source>★ Bookmarked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="2317"/>
+        <source>☆ Bookmark</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="2216"/>
+        <source>Play from this Aya</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="2300"/>
+        <source>Share</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="2325"/>
+        <source>Added to bookmarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="2326"/>
+        <source>Removed from bookmarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="1435"/>
+        <source>Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="1542"/>
+        <source>Downloading Holy Quran page...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="1543"/>
+        <source>Preparing page...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="1552"/>
+        <source>🌐 Internet connection required to download and cache page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="1605"/>
+        <source>Could not load Quran page.
+Please ensure internet is connected and tap Retry.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="1614"/>
+        <source>Retry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="1706"/>
+        <source>Tap to exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranReaderPage.qml" line="1977"/>
+        <source> • 🌐 Online stream</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QuranSearchStatsPage</name>
+    <message>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="68"/>
+        <source>Sort: By Surah Order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="69"/>
+        <source>Sort: By Highest Count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="75"/>
+        <source>Refresh Statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="79"/>
+        <source>Listening Statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="90"/>
+        <source>Quran Search Statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="111"/>
+        <source>Searched Word / Phrase</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="140"/>
+        <source>Exact Tashkeel / Diacritics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="178"/>
+        <source>Occurrences</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="184"/>
+        <source>times</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="212"/>
+        <source>Verses Count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="218"/>
+        <source>Ayahs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="246"/>
+        <source>Surahs Count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="252"/>
+        <source>Surahs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="282"/>
+        <source>Revelation Distribution (Meccan / Medinan):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="388"/>
+        <source>Chart View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="395"/>
+        <source>Table View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="549"/>
+        <source>Detailed Statistics Table</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="568"/>
+        <source>Surah</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="578"/>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="588"/>
+        <source>Count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="598"/>
+        <source>Ratio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="472"/>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="658"/>
+        <source>Meccan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="473"/>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="659"/>
+        <source>Medinan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranSearchStatsPage.qml" line="699"/>
+        <source>No statistical results found for this word.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QuranTafsirPage</name>
+    <message>
+        <location filename="../qml/pages/QuranTafsirPage.qml" line="166"/>
+        <source>Play Ayah Audio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranTafsirPage.qml" line="79"/>
+        <source>Ayah &amp; Tafsir copied to clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranTafsirPage.qml" line="87"/>
+        <source>Share Ayah</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranTafsirPage.qml" line="146"/>
+        <source>🌐 Internet connection required to stream (ayah not cached)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranTafsirPage.qml" line="151"/>
+        <source>⚠️ Playback failed. Please check internet connection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranTafsirPage.qml" line="154"/>
+        <source>⚠️ Ayah audio playback error.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranTafsirPage.qml" line="173"/>
+        <source>Share Ayah &amp; Tafsir</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranTafsirPage.qml" line="182"/>
+        <source>Riwayah: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranTafsirPage.qml" line="196"/>
+        <source>Tafsir &amp; Translation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranTafsirPage.qml" line="231"/>
+        <location filename="../qml/pages/QuranTafsirPage.qml" line="254"/>
+        <source>Font size: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranTafsirPage.qml" line="389"/>
+        <source>Added to bookmarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranTafsirPage.qml" line="390"/>
+        <source>Removed from bookmarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranTafsirPage.qml" line="413"/>
+        <source>Edition:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranTafsirPage.qml" line="495"/>
+        <source>No text available for this verse.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranTafsirPage.qml" line="521"/>
+        <source>Previous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/QuranTafsirPage.qml" line="541"/>
+        <source>Next</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1514,6 +3171,11 @@
     </message>
     <message>
         <location filename="../qml/pages/SettingsPage.qml" line="49"/>
+        <source>Appearance &amp; Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/SettingsPage.qml" line="55"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1714,47 +3376,62 @@
 <context>
     <name>StopPage</name>
     <message>
-        <location filename="../qml/pages/StopPage.qml" line="22"/>
+        <location filename="../qml/pages/StopPage.qml" line="41"/>
         <source>Fajr</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StopPage.qml" line="23"/>
+        <location filename="../qml/pages/StopPage.qml" line="42"/>
         <source>Chourouq</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StopPage.qml" line="24"/>
+        <location filename="../qml/pages/StopPage.qml" line="43"/>
         <source>Dhouhr</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StopPage.qml" line="19"/>
+        <location filename="../qml/pages/StopPage.qml" line="38"/>
         <source>Friday prayer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StopPage.qml" line="25"/>
+        <location filename="../qml/pages/StopPage.qml" line="35"/>
+        <source>Morning Athkar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/StopPage.qml" line="36"/>
+        <source>Evening Athkar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/StopPage.qml" line="44"/>
         <source>Assar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StopPage.qml" line="26"/>
+        <location filename="../qml/pages/StopPage.qml" line="45"/>
         <source>Maghreb</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StopPage.qml" line="27"/>
+        <location filename="../qml/pages/StopPage.qml" line="46"/>
         <source>Ishaa</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StopPage.qml" line="43"/>
+        <location filename="../qml/pages/StopPage.qml" line="63"/>
+        <source>Athkar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/StopPage.qml" line="64"/>
         <source>Athan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StopPage.qml" line="57"/>
+        <location filename="../qml/pages/StopPage.qml" line="78"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1792,99 +3469,145 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="39"/>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="40"/>
         <source>Time Adjustments</source>
         <translation type="unfinished">Time Adjustments</translation>
     </message>
     <message>
-        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="41"/>
-        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="45"/>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="42"/>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="46"/>
         <source>Time format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="49"/>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="50"/>
         <source>12-hour (am / pm)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="50"/>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="51"/>
         <source>24-hour</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="55"/>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="56"/>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="60"/>
+        <source>Daylight saving time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="65"/>
+        <source>Automatic (by country &amp; city)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="66"/>
+        <source>Disabled (Standard time)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="67"/>
+        <source>Enabled (+1 hour)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="76"/>
         <source>Prayer time adjustments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="63"/>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="84"/>
         <source>Fine-tune each prayer time (±30 min) to match your local mosque.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="77"/>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="98"/>
         <source>Adjust %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="78"/>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="99"/>
         <source>min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="85"/>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="106"/>
         <source>Hijri calendar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="93"/>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="114"/>
         <source>Adjust the Islamic date by ±3 days to match your local moon-sighting.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="98"/>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="119"/>
         <source>Date adjustment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="107"/>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="128"/>
         <source>-3 days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="108"/>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="129"/>
         <source>-2 days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="109"/>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="130"/>
         <source>-1 day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="110"/>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="131"/>
         <source>0 days (default)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="111"/>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="132"/>
         <source>+1 day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="112"/>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="133"/>
         <source>+2 days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="113"/>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="134"/>
         <source>+3 days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="127"/>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="148"/>
         <source>Resulting date: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="151"/>
+        <source>Ramadan &amp; Imsak</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="155"/>
+        <source>Always show Imsak on main page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="156"/>
+        <source>By default, Imsak is only shown during Ramadan. Turn this on to show it year-round.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="163"/>
+        <source>Imsak margin before Fajr</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TimeAdjustmentsPage.qml" line="168"/>
+        <source>%1 min before Fajr</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

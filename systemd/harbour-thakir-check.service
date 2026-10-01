@@ -3,6 +3,8 @@ Description=Athan periodic check (triggered by harbour-thakir-check.timer)
 
 [Service]
 Type=oneshot
+# Allow full Athan and Athkar playlists to finish without systemd's default 90s timeout
+TimeoutSec=15min
 # Runs as the normal device user (not root) - needed to read that
 # user's ~/.config/org.hafsoftdz/harbour-thakir settings and to have a working audio
 # session for paplay. NOTE: hardcoded to the standard Sailfish primary

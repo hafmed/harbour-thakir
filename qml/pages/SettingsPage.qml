@@ -46,6 +46,12 @@ Page {
                     pageUrl: "TimeAdjustmentsPage.qml"
                 }
                 ListElement {
+                    title: QT_TR_NOOP("Appearance & Background")
+                    iconSource: "image://theme/icon-m-image"
+                    fallbackIcon: ""
+                    pageUrl: "AppearancePage.qml"
+                }
+                ListElement {
                     title: QT_TR_NOOP("About")
                     iconSource: "image://theme/icon-m-about"
                     fallbackIcon: "../icons/ic_about.svg"
@@ -85,7 +91,9 @@ Page {
 
                         Label {
                             anchors.verticalCenter: parent.verticalCenter
-                            text: qsTr(model.title)
+                            text: (prayerManager.isArabicLanguage && model.title === "Appearance & Background")
+                                  ? "المظهر والخلفية"
+                                  : qsTr(model.title)
                             color: menuItem.highlighted ? Theme.highlightColor : Theme.primaryColor
                             font.pixelSize: Theme.fontSizeMedium
                         }

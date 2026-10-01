@@ -16,7 +16,6 @@ OnCalendar=minutely
 # overnight testing - see README.md / git history). Requires this to be
 # a SYSTEM-level timer, not a --user one.
 WakeSystem=true
-Persistent=true
 AccuracySec=10s
 
 [Install]

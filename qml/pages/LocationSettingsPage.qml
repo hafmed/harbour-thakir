@@ -15,6 +15,7 @@ Page {
         onMethodChanged: methodCombo.currentIndex = prayerManager.method
         onMadhabChanged: madhabCombo.currentIndex = prayerManager.madhab
         onHighLatitudeRuleChanged: hlRuleCombo.currentIndex = prayerManager.highLatitudeRule
+        onDaylightSavingChanged: dstCombo.currentIndex = prayerManager.daylightSaving
         onAppLanguageChanged: languageCombo.currentIndex = languageCombo.langToIndex(prayerManager.appLanguage)
     }
 
@@ -47,6 +48,26 @@ Page {
                 Button {
                     text: qsTr("Pick on map instead")
                     onClicked: pageStack.push(Qt.resolvedUrl("CityMapPage.qml"))
+                }
+            }
+
+            SectionHeader { text: prayerManager.isArabicLanguage ? "التوقيت الصيفي" : qsTr("Daylight saving time") }
+
+            ComboBox {
+                id: dstCombo
+                label: prayerManager.isArabicLanguage ? "التوقيت الصيفي" : qsTr("Daylight saving time")
+                description: prayerManager.daylightSavingDescription
+                width: parent.width
+                currentIndex: prayerManager.daylightSaving
+                menu: ContextMenu {
+                    MenuItem { text: prayerManager.isArabicLanguage ? "تلقائي (بحسب الدولة والمدينة)" : qsTr("Automatic (by country & city)") }
+                    MenuItem { text: prayerManager.isArabicLanguage ? "معطّل (التوقيت القياسي)" : qsTr("Disabled (Standard time)") }
+                    MenuItem { text: prayerManager.isArabicLanguage ? "مفعّل (+1 ساعة)" : qsTr("Enabled (+1 hour)") }
+                }
+                onCurrentIndexChanged: {
+                    if (currentIndex >= 0 && currentIndex <= 2) {
+                        prayerManager.daylightSaving = currentIndex
+                    }
                 }
             }
 

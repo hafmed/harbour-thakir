@@ -36,12 +36,18 @@ class PrayerManager : public QObject
     Q_PROPERTY(bool isNextPrayerTomorrow READ isNextPrayerTomorrow NOTIFY timesChanged)
     Q_PROPERTY(QString hijriDate READ hijriDate NOTIFY timesChanged)
     Q_PROPERTY(int hijriAdjustment READ hijriAdjustment WRITE setHijriAdjustment NOTIFY hijriAdjustmentChanged)
+    Q_PROPERTY(bool isRamadan READ isRamadan NOTIFY timesChanged)
+    Q_PROPERTY(QString imsakTime READ imsakTime NOTIFY timesChanged)
+    Q_PROPERTY(int imsakMinutes READ imsakMinutes WRITE setImsakMinutes NOTIFY imsakMinutesChanged)
+    Q_PROPERTY(bool showImsakAlways READ showImsakAlways WRITE setShowImsakAlways NOTIFY showImsakAlwaysChanged)
     Q_PROPERTY(QVariantMap enabledPrayers READ enabledPrayers NOTIFY enabledChanged)
     Q_PROPERTY(Geocoder *geocoder READ geocoder CONSTANT)
     Q_PROPERTY(QVariantList favorites READ favorites NOTIFY favoritesChanged)
     Q_PROPERTY(QString activeFavoriteId READ activeFavoriteId NOTIFY activeFavoriteChanged)
     Q_PROPERTY(QString activeFavoriteName READ activeFavoriteName NOTIFY activeFavoriteChanged)
     Q_PROPERTY(bool stopWithPowerButton READ stopWithPowerButton WRITE setStopWithPowerButton NOTIFY stopWithPowerButtonChanged)
+    Q_PROPERTY(bool stopWithFlipOver READ stopWithFlipOver WRITE setStopWithFlipOver NOTIFY stopWithFlipOverChanged)
+    Q_PROPERTY(bool stopWithVolumeButtons READ stopWithVolumeButtons WRITE setStopWithVolumeButtons NOTIFY stopWithVolumeButtonsChanged)
     Q_PROPERTY(bool showNotification READ showNotification WRITE setShowNotification NOTIFY showNotificationChanged)
     Q_PROPERTY(double qiblaBearing READ qiblaBearing NOTIFY cityChanged)
     Q_PROPERTY(double qiblaDistanceKm READ qiblaDistanceKm NOTIFY cityChanged)
@@ -67,7 +73,13 @@ class PrayerManager : public QObject
     Q_PROPERTY(int highLatitudeRule READ highLatitudeRule WRITE setHighLatitudeRule NOTIFY highLatitudeRuleChanged)
     Q_PROPERTY(bool use24HourFormat READ use24HourFormat WRITE setUse24HourFormat NOTIFY use24HourFormatChanged)
     Q_PROPERTY(int homeLayout READ homeLayout WRITE setHomeLayout NOTIFY homeLayoutChanged)
+    Q_PROPERTY(int backgroundImage READ backgroundImage WRITE setBackgroundImage NOTIFY backgroundImageChanged)
+    Q_PROPERTY(double backgroundOpacity READ backgroundOpacity WRITE setBackgroundOpacity NOTIFY backgroundOpacityChanged)
     Q_PROPERTY(QString dailyWisdom READ dailyWisdom NOTIFY timesChanged)
+    Q_PROPERTY(bool hasIslamicEvent READ hasIslamicEvent NOTIFY timesChanged)
+    Q_PROPERTY(QString islamicEventTitle READ islamicEventTitle NOTIFY timesChanged)
+    Q_PROPERTY(QString islamicEventBanner READ islamicEventBanner NOTIFY timesChanged)
+    Q_PROPERTY(QString islamicEventContent READ islamicEventContent NOTIFY timesChanged)
     Q_PROPERTY(QString appLanguage READ appLanguage WRITE setAppLanguage NOTIFY appLanguageChanged)
     Q_PROPERTY(bool isArabicLanguage READ isArabicLanguage NOTIFY appLanguageChanged)
     Q_PROPERTY(bool useHindiNumerals READ useHindiNumerals WRITE setUseHindiNumerals NOTIFY useHindiNumeralsChanged)
@@ -77,11 +89,19 @@ class PrayerManager : public QObject
     Q_PROPERTY(bool fridaySilentEnabled READ fridaySilentEnabled WRITE setFridaySilentEnabled NOTIFY fridaySilentChanged)
     Q_PROPERTY(int fridaySilentBeforeMinutes READ fridaySilentBeforeMinutes WRITE setFridaySilentBeforeMinutes NOTIFY fridaySilentChanged)
     Q_PROPERTY(int fridaySilentAfterMinutes READ fridaySilentAfterMinutes WRITE setFridaySilentAfterMinutes NOTIFY fridaySilentChanged)
+    Q_PROPERTY(bool morningAthkarEnabled READ morningAthkarEnabled WRITE setMorningAthkarEnabled NOTIFY morningAthkarChanged)
+    Q_PROPERTY(int morningAthkarMinutes READ morningAthkarMinutes WRITE setMorningAthkarMinutes NOTIFY morningAthkarChanged)
+    Q_PROPERTY(bool eveningAthkarEnabled READ eveningAthkarEnabled WRITE setEveningAthkarEnabled NOTIFY eveningAthkarChanged)
+    Q_PROPERTY(int eveningAthkarMinutes READ eveningAthkarMinutes WRITE setEveningAthkarMinutes NOTIFY eveningAthkarChanged)
+    Q_PROPERTY(bool showInEventsView READ showInEventsView WRITE setShowInEventsView NOTIFY showInEventsViewChanged)
+    Q_PROPERTY(int daylightSaving READ daylightSaving WRITE setDaylightSaving NOTIFY daylightSavingChanged)
+    Q_PROPERTY(bool isDaylightSavingActive READ isDaylightSavingActive NOTIFY daylightSavingChanged)
+    Q_PROPERTY(QString daylightSavingDescription READ daylightSavingDescription NOTIFY daylightSavingChanged)
 
 public:
     explicit PrayerManager(QObject *parent = nullptr);
 
-    QString appVersion() const { return QStringLiteral("1.0.9-1"); }
+    QString appVersion() const { return QStringLiteral("3.1.0-1"); }
     QString osVersion() const;
     QString buildDate() const;
     QString cityName() const;
@@ -119,6 +139,18 @@ public:
     void setUse24HourFormat(bool enabled);
     int homeLayout() const;
     void setHomeLayout(int layout);
+    int backgroundImage() const;
+    void setBackgroundImage(int index);
+    double backgroundOpacity() const;
+    void setBackgroundOpacity(double opacity);
+    int daylightSaving() const { return m_daylightSaving; }
+    void setDaylightSaving(int mode);
+    bool isDaylightSavingActive() const;
+    QString daylightSavingDescription() const;
+    Q_INVOKABLE double effectiveDaylightOffset(const QDate &date = QDate()) const;
+    static double staticTimezoneOffsetHoursFor(const QString &ianaId, const QString &countryCode,
+                                               const QString &countryName, double lon,
+                                               int daylightSavingMode, const QDate &date);
 
     Q_INVOKABLE void updateCelestialPositions();
     int method() const;
@@ -159,6 +191,10 @@ public:
     Q_INVOKABLE int nextPrayerRemainingSeconds() const;
     Q_INVOKABLE bool isPreAlertWindow() const;
     Q_INVOKABLE QString dailyWisdom() const;
+    bool hasIslamicEvent() const;
+    QString islamicEventTitle() const;
+    QString islamicEventBanner() const;
+    QString islamicEventContent() const;
 
     // Silent-mode-after-prayer: a single global delay/duration (applies
     // whichever prayer triggers it), plus a per-prayer on/off toggle so
@@ -183,6 +219,24 @@ public:
     Q_INVOKABLE int fridaySilentAfterMinutes() const;
     Q_INVOKABLE void setFridaySilentAfterMinutes(int minutes);
 
+    Q_INVOKABLE bool morningAthkarEnabled() const;
+    Q_INVOKABLE void setMorningAthkarEnabled(bool enabled);
+    Q_INVOKABLE int morningAthkarMinutes() const;
+    Q_INVOKABLE void setMorningAthkarMinutes(int minutes);
+
+    Q_INVOKABLE bool eveningAthkarEnabled() const;
+    Q_INVOKABLE void setEveningAthkarEnabled(bool enabled);
+    Q_INVOKABLE int eveningAthkarMinutes() const;
+    Q_INVOKABLE void setEveningAthkarMinutes(int minutes);
+
+    Q_INVOKABLE QStringList morningAthkarAudioPaths() const;
+    Q_INVOKABLE QStringList eveningAthkarAudioPaths() const;
+    Q_INVOKABLE QString resolveAthkarPath(const QString &relPath) const;
+
+    Q_INVOKABLE bool showInEventsView() const;
+    Q_INVOKABLE void setShowInEventsView(bool enabled);
+    Q_INVOKABLE void updateEventsViewStatus();
+
     // Whether --check-and-play should skip playing the athan/pre-alert
     // entirely when the phone is currently in the "Silent" profile
     // (checked via profiled - see main.cpp) - respects a silent mode the
@@ -197,11 +251,23 @@ public:
     Q_INVOKABLE void setStopWithPowerButton(bool enabled);
     Q_INVOKABLE bool stopWithPowerButton() const;
 
+    Q_INVOKABLE void setStopWithFlipOver(bool enabled);
+    Q_INVOKABLE bool stopWithFlipOver() const;
+
+    Q_INVOKABLE void setStopWithVolumeButtons(bool enabled);
+    Q_INVOKABLE bool stopWithVolumeButtons() const;
+
     Q_INVOKABLE void setShowNotification(bool enabled);
     Q_INVOKABLE bool showNotification() const;
 
     Q_INVOKABLE void setHijriAdjustment(int days);
     Q_INVOKABLE int hijriAdjustment() const;
+    Q_INVOKABLE bool isRamadan() const;
+    Q_INVOKABLE QString imsakTime() const;
+    Q_INVOKABLE int imsakMinutes() const;
+    Q_INVOKABLE void setImsakMinutes(int mins);
+    Q_INVOKABLE bool showImsakAlways() const;
+    Q_INVOKABLE void setShowImsakAlways(bool always);
 
     Q_INVOKABLE void setCompassCalibration(int offset);
     Q_INVOKABLE int compassCalibration() const;
@@ -215,6 +281,9 @@ public:
     // countdown live. Returns e.g. "2h 15m" or "45m", or an empty
     // string if there's no city configured.
     Q_INVOKABLE QString nextPrayerCountdown() const;
+    Q_INVOKABLE QString localizedPrayerName(const QString &prayerKey, bool isFriday = false, bool isTomorrow = false) const;
+    Q_INVOKABLE QString localizedRemainingTime() const;
+    Q_INVOKABLE QString randomWisdom(bool forceNew = false) const;
 
     // Progress towards next prayer (0.0 to 1.0) and percentages (0 to 100)
     Q_INVOKABLE double nextPrayerProgress() const;
@@ -257,6 +326,7 @@ public:
     Q_INVOKABLE QString formatDigits(const QString &str) const;
     Q_INVOKABLE QString formatDate(const QDate &date = QDate()) const;
     Q_INVOKABLE QString formatCurrentDateTime(const QDateTime &dt = QDateTime()) const;
+    Q_INVOKABLE void checkNextPrayer();
     void setQmlEngine(QQmlEngine *engine);
     static void applyLanguage(const QString &lang);
     static void installAppTranslator(QCoreApplication *app = nullptr);
@@ -272,24 +342,39 @@ signals:
     void favoritesChanged();
     void activeFavoriteChanged();
     void stopWithPowerButtonChanged();
+    void stopWithFlipOverChanged();
+    void stopWithVolumeButtonsChanged();
     void showNotificationChanged();
     void hijriAdjustmentChanged();
+    void imsakMinutesChanged();
+    void showImsakAlwaysChanged();
     void compassCalibrationChanged();
     void celestialPositionsChanged();
     void qiblaModeChanged();
     void celestialReferenceChanged();
     void use24HourFormatChanged();
     void homeLayoutChanged();
+    void backgroundImageChanged();
+    void backgroundOpacityChanged();
     void appLanguageChanged();
     void useHindiNumeralsChanged();
     void buildDateChanged();
     void fridaySilentChanged();
     void silentSettingsChanged();
+    void morningAthkarChanged();
+    void eveningAthkarChanged();
+    void showInEventsViewChanged();
+    void daylightSavingChanged();
 
 private:
     double timezoneOffsetHoursFor(const QString &ianaId, const QDate &date) const;
     void configureCalculator(PrayerTimes &calc, const QDate &date) const;
     QVariantMap timesToMap(const PrayerTimes::Times &t) const;
+    static bool isEuropeanDst(const QDate &date);
+    static bool isEgyptDst(const QDate &date);
+    static bool isNorthAmericanDst(const QDate &date);
+    static double automaticDaylightOffset(const QString &countryCode, const QString &countryName, const QString &ianaId, const QDate &date);
+    static double fallbackStandardOffset(const QString &countryCode, double lon);
     // Reasonable default calculation method per country, based on
     // commonly-used regional conventions (e.g. Umm al-Qura in Saudi
     // Arabia, ISNA in the US/Canada). Falls back to MWL (method 0) for
@@ -298,6 +383,7 @@ private:
     // can always override it afterward in Settings.
     static int defaultMethodForCountryCode(const QString &countryCode);
     static bool defaultHindiNumeralsForCountry(const QString &countryCode, const QString &countryName = QString(), const QString &timezoneId = QString());
+    static int defaultBackgroundImageForCountry(const QString &countryCode, const QString &countryName = QString(), const QString &timezoneId = QString());
 
     // Shared by nextPrayerName()/nextPrayerTime()/nextPrayerCountdown()
     // so all three agree on exactly the same occurrence - checks today
@@ -323,9 +409,11 @@ private:
     Geocoder m_geocoder;
     QString m_cityName;
     QString m_countryName;
+    QString m_countryCode;
     double m_lat = 0.0;
     double m_lon = 0.0;
     QString m_tzId;
+    int m_daylightSaving = 0; // 0 = Auto (by country & city), 1 = Standard (Off), 2 = Daylight (+1h)
     int m_method = 0;
     int m_madhab = 0;
     int m_highLatitudeRule = 1;
@@ -345,6 +433,13 @@ private:
     QQmlEngine *m_engine = nullptr;
     QTranslator *m_translator = nullptr;
     QTimer *m_silentModeTimer = nullptr;
+    QTimer *m_periodicTimer = nullptr;
+    mutable QString m_lastNextPrayer;
+    mutable bool m_lastIsNextPrayerTomorrow = false;
+    mutable QDate m_lastDate;
+
+private slots:
+    void onPeriodicCheck();
 };
 
 #endif // PRAYERMANAGER_H
